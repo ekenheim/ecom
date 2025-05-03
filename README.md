@@ -2,6 +2,7 @@
 
 [![pipeline status](https://gitlab.ekenhome.se/ecommerce/rug-store/badges/main/pipeline.svg)](https://gitlab.ekenhome.se/ecommerce/rug-store/-/commits/main)
 
+
 <h1 align="center">Fashion E-commerce Starter for Medusa 2.0</h1>
 
 <video src="https://github.com/user-attachments/assets/1afe48e4-5a28-4aee-b4bd-e405701d3cc6" controls="controls" muted="muted" playsinline="playsinline"></video>
