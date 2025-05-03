@@ -10,9 +10,9 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   # Improve performance with overlay2 driver
   DOCKER_DRIVER: overlay2
-  # Override the clone URL to use the internal IP address via HTTPS
+  # Override the repository URL to use the internal IP address via HTTPS
   # NOTE: This might fail if the certificate is not valid for the IP
-  GIT_CLONE_URL: https://192.168.50.187/${CI_PROJECT_PATH}.git
+  CI_REPOSITORY_URL: https://192.168.50.187/${CI_PROJECT_PATH}.git
   # Force a clean clone instead of fetch
   GIT_STRATEGY: clone
 
