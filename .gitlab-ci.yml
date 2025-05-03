@@ -22,8 +22,6 @@ stages:
 
 default:
   image: docker:latest # Use a standard docker image for the jobs
-  tags:
-    - k8s
   before_script:
     # $CI_REGISTRY_USER, $CI_REGISTRY_PASSWORD are predefined GitLab CI/CD variables
     # Explicitly log in to the target registry IP
