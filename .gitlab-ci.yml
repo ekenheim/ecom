@@ -18,7 +18,7 @@ services:
   - docker:dind # Docker-in-Docker
 
 stages:
-  - build
+  - build # Build stage for creating images
 
 default:
   image: docker:latest # Use a standard docker image for the jobs
