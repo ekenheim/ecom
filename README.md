@@ -1,93 +1,236 @@
-# Rug Store
+<h1 align="center">Fashion E-commerce Starter for Medusa 2.0</h1>
 
+<video src="https://github.com/user-attachments/assets/1afe48e4-5a28-4aee-b4bd-e405701d3cc6" controls="controls" muted="muted" playsinline="playsinline"></video>
 
+<p align="center">
+  <a href="https://www.figma.com/community/file/1494273775050024009" target="_blank">
+    <img src="https://img.shields.io/badge/Figma-Design_Template-F24E1E?style=for-the-badge&logo=figma&logoColor=white" alt="Figma Design Template" />
+  </a>
+</p>
 
-## Getting started
+The **Fashion E-commerce Starter** is a modern, customizable e-commerce template built with **Medusa 2.0**. Designed around the concept of the sustainable furniture brand **Sofa Society**, this starter showcases the power of new Medusa 2.0 version. With its focus on cutting-edge design, sustainability, and personalization, Sofa Society offers users an elegant shopping experience where they can explore customizable collections, product options, and a streamlined checkout flow.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+This starter kit is an ideal solution for developers who need to set up a professional, feature-rich fashion e-commerce store quickly. It comes with a sleek and modern design, customizable collections, an Inspiration page, an About page, and a streamlined checkout process. The storefront is fully responsive and optimized for mobile, tablet, and desktop devices.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+<h2>Table of Contents</h2>
 
-## Add your files
+- [Features](#features)
+- [Roadmap](#roadmap)
+- [Screenshots](#screenshots)
+- [Prerequisites](#prerequisites)
+- [Quickstart](#quickstart)
+  - [Medusa](#medusa)
+  - [Storefront](#storefront)
+  - [Meilisearch](#meilisearch)
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## Features
 
-```
-cd existing_repo
-git remote add origin https://gitlab.ekenhome.se/ecommerce/rug-store.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.ekenhome.se/ecommerce/rug-store/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+- **Sleek, Modern Design**: The storefront boasts a minimalist, contemporary design that perfectly reflects **Sofa Society's** commitment to modern aesthetics and sustainability.
+- **Dynamic Materials and Colors**: Add richness to your product offerings by defining **materials** and **colors** for each product. Colors will be displayed using their corresponding hex codes, and each material can have multiple color options. Customers first select a material, then a color, with dynamic pricing based on their choices.
+- **Customizable Collections**: Easily customize the content and images for each collection. Each product page also features images and a CTA for the collection it belongs to, which can be personalized as well, creating a fully branded shopping experience.
+- **Premade Inspiration Page**: A beautiful, ready-to-use inspiration page helps customers explore the latest trends and styles, showcasing Sofa Society's furniture in real-world settings.
+- **About Page**: Share your brand’s story, values, and commitment to sustainability with a pre-built about page that captures the essence of **Sofa Society**.
+- **Streamlined Checkout Flow**: The checkout process is designed to be fast, intuitive, and frictionless, providing a seamless shopping experience for your customers from start to finish.
+- **Fully Responsive Design**: Optimized for mobile, tablet, and desktop devices, ensuring a smooth, consistent experience across all platforms.
+- **Stripe Integration for Payments**: Accept payments effortlessly by integrating **Stripe**. Simply add your Stripe API key to `medusa/.env` and the publishable key to `storefront/.env` to get started.
+- **Full E-commerce Functionality**: The starter includes all the essential e-commerce features you need, including product pages, a shopping cart, a checkout process, and order confirmation.
+- **Next.js and Tailwind CSS**: Built with **Next.js** v15 app router and **Tailwind CSS**, the starter is highly performant, customizable, and easy to extend with additional features.
 
 ## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+- [x] **Figma Design Template**: This will enable you to easily customize the design of the storefront to match your brand. [View template](https://www.figma.com/community/file/1494273775050024009).
+- [x] **Search**: Integration with Meilisearch for a powerful search experience.
+- [x] **404 Page**: Custom 404 page for a better user experience.
+- [x] **Account Management**: Allow customers to create accounts, view order history, and manage their personal information.
+- [x] **Cart Drawer**: Cart drawer that slides in from the side where customers can view and edit their cart items.
+- [x] **Email Templates**: Customizable email templates for order confirmation, shipping updates, and more.
+- [x] **Infinite Scroll Pagination**: Improve the product discovery experience with infinite scroll pagination on store and collection pages.
+- [x] **Resend Integration**: Integration with Resend for sending transactional emails.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+## Screenshots
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+<details open="open">
+<summary><strong style="font-size: 1.15rem">Home</strong></summary>
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+![Home Page](./media/home.jpeg)
+</details>
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+<details>
+<summary><strong style="font-size: 1.15rem">About</strong></summary>
 
-## License
-For open source projects, say how it is licensed.
+![About Page](./media/about.jpeg)
+</details>
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+<details>
+<summary><strong style="font-size: 1.15rem">Inspiration</strong></summary>
+
+![Inspiration Page](./media/inspiration.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Collection</strong></summary>
+
+![Collection Page](./media/collection.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Store</strong></summary>
+
+![Store Page](./media/store.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Product</strong></summary>
+
+![Product Page](./media/product.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Cart</strong></summary>
+
+![Cart Page](./media/cart.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Checkout</strong></summary>
+
+![Checkout Page](./media/checkout.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Checkout Review</strong></summary>
+
+![Checkout Review Page](./media/checkout-review.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Order Confirmation</strong></summary>
+
+![Order Confirmation Page](./media/order-confirmation.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Admin - Edit Collection</strong></summary>
+
+![Admin - Edit Collection](./media/admin-collection.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Admin - Edit Product Type</strong></summary>
+
+![Admin - Edit Product Type](./media/admin-product-type.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Admin - Materials</strong></summary>
+
+![Admin - Materials](./media/admin-materials.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Admin - Colors</strong></summary>
+
+![Admin - Colors](./media/admin-colors.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Admin - Edit Color</strong></summary>
+
+![Admin - Edit Color](./media/admin-edit-color.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Admin - Product</strong></summary>
+
+![Admin - Product](./media/admin-product.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Admin - Product Missing Color</strong></summary>
+
+![Admin - Product Missing Color](./media/product-missing-color.jpeg)
+</details>
+
+<details>
+<summary><strong style="font-size: 1.15rem">Admin - Product Add Missing Color</strong></summary>
+
+![Admin - Product Add Missing Color](./media/product-add-missing-color.jpeg)
+</details>
+
+## Prerequisites
+
+- Node >= 20
+- Yarn >= 3.5 for Medusa, Yarn v1 for Storefront
+- Docker and Docker Compose
+- Stripe account (for payments)
+- httpie
+
+## Quickstart
+
+```bash
+git clone git@github.com:Agilo/fashion-starter.git
+```
+
+### Medusa
+
+```bash
+cd medusa
+
+# Create the .env file
+cp .env.template .env
+
+# Install dependencies
+yarn
+
+# Spin up the database and Redis
+docker-compose up -d
+
+# Build the project
+yarn build
+
+# Run the migrations
+yarn medusa db:migrate
+
+# Seed the database
+yarn seed
+
+# Create an user
+yarn medusa user -e "admin@medusa.local" -p "supersecret"
+
+# Start the development server
+yarn dev
+```
+
+At this point, you should be able to access the Medusa admin at http://localhost:9000/app with the credentials you just created. After logging in, you should go to http://localhost:9000/app/settings/publishable-api-keys, copy the publishable key, and paste it into the `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` env variable in the `storefront/.env.local` file.
+
+### Storefront
+
+```bash
+cd storefront
+
+# Create the .env.local file
+cp .env.template .env.local
+
+# Install dependencies
+yarn
+
+# Start the development server
+yarn dev
+```
+
+You should now be able to access the storefront at http://localhost:8000.
+
+### Meilisearch
+
+```bash
+# Get search api key
+http --auth "yoursecretmasterkey" --auth-type bearer GET http://localhost:7700/keys
+```
+
+You should go to `storefront/.env.local` file and paste obtained key into the `NEXT_PUBLIC_SEARCH_API_KEY` env variable. Also, go to the `backend/.env` file and paste admin key into `MEILISEARCH_API_KEY`
+
+<a href="https://agilo.com" target="_blank">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/a4429448-a08a-4f5a-8195-2cea1416ca87">
+    <img src="https://github.com/user-attachments/assets/772994f8-32c6-4b27-832f-2660f833fd78">
+  </picture>
+</a>
