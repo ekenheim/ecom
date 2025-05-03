@@ -34,6 +34,8 @@ default:
 build_medusa:
   stage: build
   script:
+    - echo "<<<<< EXECUTING LATEST .gitlab-ci.yml - If you see this, the file is being read! >>>>>"
+    - exit 1 # Intentionally fail the job here for testing
     - cd medusa
     - >
       docker build \\
