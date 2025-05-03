@@ -1,0 +1,57 @@
+variables:
+  # Use Docker-in-Docker service
+  # More info: https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+  # Improve performance with overlay2 driver
+  DOCKER_DRIVER: overlay2
+
+services:
+  - docker:dind # Docker-in-Docker
+
+stages:
+  - build
+
+default:
+  image: docker:latest # Use a standard docker image for the jobs
+  before_script:
+    # $CI_REGISTRY_USER, $CI_REGISTRY_PASSWORD, $CI_REGISTRY are predefined GitLab CI/CD variables
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+build_medusa:
+  stage: build
+  script:
+    - cd medusa
+    - >
+      docker build \
+        --tag "$CI_REGISTRY_IMAGE/medusa:$CI_COMMIT_SHORT_SHA" \
+        --tag "$CI_REGISTRY_IMAGE/medusa:latest" \
+        .
+    - docker push "$CI_REGISTRY_IMAGE/medusa:$CI_COMMIT_SHORT_SHA"
+    - docker push "$CI_REGISTRY_IMAGE/medusa:latest"
+  # Only run this job if files in the medusa directory change
+  rules:
+    - if: $CI_COMMIT_TAG # Run for tags
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Run for default branch
+      changes:
+        - medusa/**/*
+
+build_storefront:
+  stage: build
+  script:
+    - cd storefront
+    - >
+      docker build \
+        --build-arg NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=$NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY \
+        --build-arg NEXT_PUBLIC_SEARCH_API_KEY=$NEXT_PUBLIC_SEARCH_API_KEY \
+        --tag "$CI_REGISTRY_IMAGE/storefront:$CI_COMMIT_SHORT_SHA" \
+        --tag "$CI_REGISTRY_IMAGE/storefront:latest" \
+        .
+    - docker push "$CI_REGISTRY_IMAGE/storefront:$CI_COMMIT_SHORT_SHA"
+    - docker push "$CI_REGISTRY_IMAGE/storefront:latest"
+  # Only run this job if files in the storefront directory change
+  rules:
+    - if: $CI_COMMIT_TAG # Run for tags
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Run for default branch
+      changes:
+        - storefront/**/* 
