@@ -1,3 +1,7 @@
+# Rug Store
+
+[![pipeline status](https://gitlab.ekenhome.se/ecommerce/rug-store/badges/main/pipeline.svg)](https://gitlab.ekenhome.se/ecommerce/rug-store/-/commits/main)
+
 <h1 align="center">Fashion E-commerce Starter for Medusa 2.0</h1>
 
 <video src="https://github.com/user-attachments/assets/1afe48e4-5a28-4aee-b4bd-e405701d3cc6" controls="controls" muted="muted" playsinline="playsinline"></video>
@@ -29,7 +33,7 @@ This starter kit is an ideal solution for developers who need to set up a profes
 - **Dynamic Materials and Colors**: Add richness to your product offerings by defining **materials** and **colors** for each product. Colors will be displayed using their corresponding hex codes, and each material can have multiple color options. Customers first select a material, then a color, with dynamic pricing based on their choices.
 - **Customizable Collections**: Easily customize the content and images for each collection. Each product page also features images and a CTA for the collection it belongs to, which can be personalized as well, creating a fully branded shopping experience.
 - **Premade Inspiration Page**: A beautiful, ready-to-use inspiration page helps customers explore the latest trends and styles, showcasing Sofa Society's furniture in real-world settings.
-- **About Page**: Share your brand’s story, values, and commitment to sustainability with a pre-built about page that captures the essence of **Sofa Society**.
+- **About Page**: Share your brand's story, values, and commitment to sustainability with a pre-built about page that captures the essence of **Sofa Society**.
 - **Streamlined Checkout Flow**: The checkout process is designed to be fast, intuitive, and frictionless, providing a seamless shopping experience for your customers from start to finish.
 - **Fully Responsive Design**: Optimized for mobile, tablet, and desktop devices, ensuring a smooth, consistent experience across all platforms.
 - **Stripe Integration for Payments**: Accept payments effortlessly by integrating **Stripe**. Simply add your Stripe API key to `medusa/.env` and the publishable key to `storefront/.env` to get started.
