@@ -11,6 +11,7 @@ variables:
   # Improve performance with overlay2 driver
   DOCKER_DRIVER: overlay2
   # Override the clone URL to use the internal Kubernetes service name (HTTP port 80)
+  # This is needed if DNS resolution for the external hostname fails within the runner pod.
   GIT_CLONE_URL: http://gitlab-webservice-default.development.svc.cluster.local/${CI_PROJECT_PATH}.git
 
 services:
