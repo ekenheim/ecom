@@ -32,12 +32,12 @@ build_medusa:
   script:
     - cd medusa
     - >
-      docker build \
-        --tag "$CI_REGISTRY_IMAGE/medusa:$CI_COMMIT_SHORT_SHA" \
-        --tag "$CI_REGISTRY_IMAGE/medusa:latest" \
+      docker build \\
+        --tag "192.168.50.187/$CI_PROJECT_PATH/medusa:$CI_COMMIT_SHORT_SHA" \\
+        --tag "192.168.50.187/$CI_PROJECT_PATH/medusa:latest" \\
         .
-    - docker push "$CI_REGISTRY_IMAGE/medusa:$CI_COMMIT_SHORT_SHA"
-    - docker push "$CI_REGISTRY_IMAGE/medusa:latest"
+    - docker push "192.168.50.187/$CI_PROJECT_PATH/medusa:$CI_COMMIT_SHORT_SHA"
+    - docker push "192.168.50.187/$CI_PROJECT_PATH/medusa:latest"
   # Job-level rules still apply, but only if a pipeline was created by the workflow
   rules:
     - if: $CI_COMMIT_TAG # Run for tags
@@ -50,14 +50,14 @@ build_storefront:
   script:
     - cd storefront
     - >
-      docker build \
-        --build-arg NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=$NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY \
-        --build-arg NEXT_PUBLIC_SEARCH_API_KEY=$NEXT_PUBLIC_SEARCH_API_KEY \
-        --tag "$CI_REGISTRY_IMAGE/storefront:$CI_COMMIT_SHORT_SHA" \
-        --tag "$CI_REGISTRY_IMAGE/storefront:latest" \
+      docker build \\
+        --build-arg NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=$NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY \\
+        --build-arg NEXT_PUBLIC_SEARCH_API_KEY=$NEXT_PUBLIC_SEARCH_API_KEY \\
+        --tag "192.168.50.187/$CI_PROJECT_PATH/storefront:$CI_COMMIT_SHORT_SHA" \\
+        --tag "192.168.50.187/$CI_PROJECT_PATH/storefront:latest" \\
         .
-    - docker push "$CI_REGISTRY_IMAGE/storefront:$CI_COMMIT_SHORT_SHA"
-    - docker push "$CI_REGISTRY_IMAGE/storefront:latest"
+    - docker push "192.168.50.187/$CI_PROJECT_PATH/storefront:$CI_COMMIT_SHORT_SHA"
+    - docker push "192.168.50.187/$CI_PROJECT_PATH/storefront:latest"
   # Job-level rules still apply, but only if a pipeline was created by the workflow
   rules:
     - if: $CI_COMMIT_TAG # Run for tags
