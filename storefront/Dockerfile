@@ -22,6 +22,9 @@ COPY package.json yarn.lock* ./
 # Ensure package.json specifies the correct yarn version if using corepack
 # e.g., "packageManager": "yarn@1.22.19"
 
+# Enable Corepack within this stage
+RUN corepack enable
+
 # Install dependencies
 # Use --frozen-lockfile for CI/CD environments
 RUN yarn install --frozen-lockfile
