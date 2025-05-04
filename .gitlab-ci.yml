@@ -1,38 +1,64 @@
-workflow:
-  rules:
-    - if: $CI_COMMIT_TAG  # Create a pipeline if a tag is pushed
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Otherwise, create a pipeline if it's a push to the default branch
+# Choose an image that definitely has git and ssh tools
+# Or install them in before_script if using docker:latest
+# Example using alpine/git:
+# default:
+#   image: alpine/git:latest
 
 variables:
-  # Use Docker-in-Docker service
-  # More info: https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_TLS_CERTDIR: ""
-  # Improve performance with overlay2 driver
-  DOCKER_DRIVER: overlay2
-  # Override the repository URL to use the internal service name via HTTP
-  CI_REPOSITORY_URL: http://gitlab-webservice-default.development.svc.cluster.local:8080/${CI_PROJECT_PATH}.git
-  # Force a clean clone instead of fetch
-  GIT_STRATEGY: clone
+  # GIT_STRATEGY: clone # Keep this if you want a fresh clone each time
+  # Use the internal SSH address of the gitlab-shell service
+  # Format: ssh://git@<service-name>.<namespace>.svc.cluster.local:<port>/<group>/<project>.git
+  # NOTE: Using 'git' user is standard for GitLab SSH
+  CI_SSH_REPOSITORY_URL: ssh://git@gitlab-gitlab-shell.development.svc.cluster.local:22/${CI_PROJECT_PATH}.git
+  GIT_DEPTH: 20 # Optional: control clone depth
 
-services:
-  - docker:dind # Docker-in-Docker
-
-stages:
-  - build # Build stage for creating images
+# ... workflow, stages ...
 
 default:
-  image: docker:latest # Use a standard docker image for the jobs
+  image: docker:latest # If using this, you MUST install ssh tools below
   tags:
     - k8s
   before_script:
-    # $CI_REGISTRY_USER, $CI_REGISTRY_PASSWORD are predefined GitLab CI/CD variables
-    # Explicitly log in to the target registry IP
+    # 1. Install SSH client and Git if not present (Needed for docker:latest)
+    - apk add --no-cache openssh-client git
+
+    # 2. Setup SSH Agent
+    - eval $(ssh-agent -s)
+
+    # 3. Add the private key from the CI/CD variable
+    #    Ensure SSH_PRIVATE_KEY variable is configured in GitLab settings
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\\r' | ssh-add -
+
+    # 4. Create SSH directory and disable strict host key checking
+    #    (Necessary because the runner pod's known_hosts is ephemeral)
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\\n\\tStrictHostKeyChecking no\\n\\tUserKnownHostsFile /dev/null" > ~/.ssh/config
+
+    # 5. (Optional but recommended) Add GitLab host key to known_hosts
+    #    This avoids the need for StrictHostKeyChecking no, but requires knowing the host key.
+    #    You can get the host key from the service IP: ssh-keyscan -p 22 gitlab-gitlab-shell.development.svc.cluster.local
+    #    Store the output in another CI variable (e.g., SSH_KNOWN_HOSTS) and add it:
+    #    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+    #    - chmod 644 ~/.ssh/known_hosts
+    #    Then you can remove StrictHostKeyChecking no from ~/.ssh/config
+
+    # 6. Login to Docker Registry (using IP as before)
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 192.168.50.187
+
+# Modify the actual clone step if necessary (GitLab runner usually handles it automatically
+# using CI_REPOSITORY_URL, but we are overriding implicitly with before_script setup)
+# The runner should now attempt SSH clone because of the ssh-agent setup.
+# If it still tries HTTP, you might need to explicitly set CI_REPOSITORY_URL:
+# variables:
+#   CI_REPOSITORY_URL: ${CI_SSH_REPOSITORY_URL}
 
 build_medusa:
   stage: build
   script:
+    # The runner's default clone should now use SSH because of before_script
+    # If not, you might need to manually clone first:
+    # - git clone ${CI_SSH_REPOSITORY_URL} . # Clone using SSH URL if runner default fails
     - cd medusa
     - >
       docker build \
@@ -41,16 +67,18 @@ build_medusa:
         .
     - docker push "192.168.50.187/$CI_PROJECT_PATH/medusa:$CI_COMMIT_SHORT_SHA"
     - docker push "192.168.50.187/$CI_PROJECT_PATH/medusa:latest"
-  # Job-level rules still apply, but only if a pipeline was created by the workflow
   rules:
-    - if: $CI_COMMIT_TAG # Run for tags
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Run for default branch
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - medusa/**/*
 
 build_storefront:
   stage: build
   script:
+    # The runner's default clone should now use SSH because of before_script
+    # If not, you might need to manually clone first:
+    # - git clone ${CI_SSH_REPOSITORY_URL} . # Clone using SSH URL if runner default fails
     - cd storefront
     - >
       docker build \
@@ -61,9 +89,8 @@ build_storefront:
         .
     - docker push "192.168.50.187/$CI_PROJECT_PATH/storefront:$CI_COMMIT_SHORT_SHA"
     - docker push "192.168.50.187/$CI_PROJECT_PATH/storefront:latest"
-  # Job-level rules still apply, but only if a pipeline was created by the workflow
   rules:
-    - if: $CI_COMMIT_TAG # Run for tags
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Run for default branch
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - storefront/**/*
