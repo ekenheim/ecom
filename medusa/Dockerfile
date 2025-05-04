@@ -35,6 +35,9 @@ COPY . .
 # Ensure the build script exists in package.json
 RUN yarn build
 
+# List contents to verify build output
+RUN ls -la /app
+
 # --- Production Stage ---
 FROM base AS production
 
