@@ -16,14 +16,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends python3 make g+
 FROM base AS builder
 
 # Copy package.json and yarn.lock
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock* ./
 
 # Enable corepack
 RUN corepack enable
 
+# Configure Yarn to use node_modules linker instead of PnP
+RUN yarn config set nodeLinker node-modules
+
 # Install dependencies
-# Use --frozen-lockfile for CI/CD environments
-RUN yarn install --frozen-lockfile
+# Use --immutable for CI/CD environments
+RUN yarn install --immutable
 
 # Copy the rest of the application code
 COPY . .
