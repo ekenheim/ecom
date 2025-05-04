@@ -43,7 +43,8 @@ FROM base AS production
 
 # Copy built artifacts and necessary files from builder stage
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
+# Copy Medusa server build output from .medusa/server
+COPY --from=builder /app/.medusa/server ./dist
 COPY package.json ./package.json
 # Add any other necessary files like static assets, config files if needed
 
