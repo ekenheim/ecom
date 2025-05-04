@@ -46,15 +46,16 @@ default:
     # 5. (Optional) Add known_hosts entry...
 
     # --- Docker Client Configuration ---
-    # Configure Docker client using cat and HEREDOC (YAML safe)
+    # Configure Docker client using multi-line block + HEREDOC
+    # Ensure indentation is correct: `- |` starts the block, subsequent lines are indented.
     - mkdir -p /etc/docker
-    - |
+    - | # Start multi-line script block
       cat <<EOF > /etc/docker/daemon.json
       {
         "insecure-registries": ["${INTERNAL_REGISTRY_ADDRESS}"]
       }
       EOF
-    # Verify content (optional)
+    # Verify content
     - echo "Verifying /etc/docker/daemon.json content:"
     - cat /etc/docker/daemon.json
 
