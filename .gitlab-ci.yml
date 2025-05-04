@@ -13,13 +13,12 @@ variables:
   DOCKER_HOST: tcp://docker:2375 # Tells docker client how to connect to the dind service
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
-  INTERNAL_REGISTRY_ADDRESS: gitlab-registry.development.svc.cluster.local:5000
+  INTERNAL_REGISTRY_ADDRESS: gitlab-registry.development.svc.cluster.local
 
 services:
   # Configure the docker:dind service itself to trust the internal registry
   - name: docker:dind
-    command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--insecure-registry", "${INTERNAL_REGISTRY_ADDRESS}"]
-
+    command: ["dockerd", "-H", "tcp://0.0.0.0:2375"]
 stages:
   - build # Build stage for creating images
 
