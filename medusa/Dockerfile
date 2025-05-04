@@ -18,6 +18,9 @@ FROM base AS builder
 # Copy package.json and yarn.lock
 COPY package.json yarn.lock ./
 
+# Enable corepack
+RUN corepack enable
+
 # Install dependencies
 # Use --frozen-lockfile for CI/CD environments
 RUN yarn install --frozen-lockfile
