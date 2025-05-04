@@ -5,31 +5,27 @@ workflow:
 
 variables:
   # --- SSH Settings ---
-  # Use the internal SSH address of the gitlab-shell service
-  # Format: ssh://git@<service-name>.<namespace>.svc.cluster.local:<port>/<group>/<project>.git
   CI_SSH_REPOSITORY_URL: ssh://git@gitlab-gitlab-shell.development.svc.cluster.local:22/${CI_PROJECT_PATH}.git
-  GIT_DEPTH: 20 # Optional: control clone depth
-  # Tell the runner not to clone automatically
+  GIT_DEPTH: 20
   GIT_STRATEGY: none
 
   # --- Docker Settings ---
-  # Use Docker-in-Docker service
-  # More info: https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker
-  DOCKER_HOST: tcp://docker:2375
+  DOCKER_HOST: tcp://docker:2375 # Tells docker client how to connect to the dind service
   DOCKER_TLS_CERTDIR: ""
-  # Improve performance with overlay2 driver
   DOCKER_DRIVER: overlay2
-  # Define internal registry address for convenience
   INTERNAL_REGISTRY_ADDRESS: gitlab-registry.development.svc.cluster.local:5000
 
 services:
-  - docker:dind # Docker-in-Docker
+  # Configure the docker:dind service itself to trust the internal registry
+  - name: docker:dind
+    # Add the --insecure-registry flag to the Docker daemon startup command
+    command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--insecure-registry", "${INTERNAL_REGISTRY_ADDRESS}"]
 
 stages:
   - build # Build stage for creating images
 
 default:
-  image: docker:latest # If using this, installs ssh tools below
+  image: docker:latest # Image for the job container (not the service)
   tags:
     - k8s
   before_script:
@@ -41,44 +37,20 @@ default:
     - eval $(ssh-agent -s)
 
     # 3. Add the private key from the CI/CD variable SSH_PRIVATE_KEY
-    #    Ensure SSH_PRIVATE_KEY variable is configured in GitLab CI/CD settings
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
 
     # 4. Create SSH directory and disable strict host key checking
-    #    (Necessary because the runner pod's known_hosts is ephemeral)
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - echo -e "Host *\\n\\tStrictHostKeyChecking no\\n\\tUserKnownHostsFile /dev/null" > ~/.ssh/config
 
-    # 5. (Optional but recommended) Add GitLab host key to known_hosts
-    #    Get key: ssh-keyscan -p 22 gitlab-gitlab-shell.development.svc.cluster.local
-    #    Store in CI var SSH_KNOWN_HOSTS and uncomment below:
-    #    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
-    #    - chmod 644 ~/.ssh/known_hosts
-    #    Then remove StrictHostKeyChecking no from ~/.ssh/config
+    # 5. (Optional) Add known_hosts entry...
 
     # --- Docker Login ---
-    # Configure Docker to trust the internal HTTP registry
-    - mkdir -p /etc/docker
-    - echo "{\"insecure-registries\": [\"${INTERNAL_REGISTRY_ADDRESS}\"]}" > /etc/docker/daemon.json
-    # Restart Docker service within the dind container (may need adjustment)
-    - docker restart || echo "Docker restart might fail in some dind setups, continuing..."
-    # Wait a bit for Docker daemon to be ready
-    - sleep 10
-    # Retry login a few times if needed, as daemon restart can be slow
-    - |
-      retry=0
-      max_retries=3
-      until docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "${INTERNAL_REGISTRY_ADDRESS}"; do
-        retry=$((retry+1))
-        if [ $retry -ge $max_retries ]; then
-          echo "Docker login failed after $max_retries attempts."
-          exit 1
-        fi
-        echo "Login attempt $retry failed, retrying in 5 seconds..."
-        sleep 5
-      done
-      echo "Docker login successful."
+    # Wait a bit for the dind service to be fully ready with the custom command
+    - sleep 15
+    # Attempt login (The Docker daemon running as a service should now trust the registry)
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "${INTERNAL_REGISTRY_ADDRESS}"
 
 build_medusa:
   stage: build
