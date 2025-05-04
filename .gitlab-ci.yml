@@ -16,21 +16,20 @@ variables:
   INTERNAL_REGISTRY_ADDRESS: gitlab-registry.development.svc.cluster.local:5000
 
 services:
-  # Configure the docker:dind service itself to trust the internal registry
+  # Keep the dind service configured with --insecure-registry for daemon-side operations
   - name: docker:dind
-    # Add the --insecure-registry flag to the Docker daemon startup command
     command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--insecure-registry", "${INTERNAL_REGISTRY_ADDRESS}"]
 
 stages:
   - build # Build stage for creating images
 
 default:
-  image: docker:latest # Image for the job container (not the service)
+  image: docker:latest
   tags:
     - k8s
   before_script:
     # --- SSH Setup ---
-    # 1. Install SSH client and Git if not present (Needed for docker:latest)
+    # 1. Install SSH client and Git
     - apk add --no-cache openssh-client git
 
     # 2. Setup SSH Agent
@@ -46,10 +45,23 @@ default:
 
     # 5. (Optional) Add known_hosts entry...
 
+    # --- Docker Client Configuration ---
+    # Configure Docker client using cat and HEREDOC (YAML safe)
+    - mkdir -p /etc/docker
+    - |
+      cat <<EOF > /etc/docker/daemon.json
+      {
+        "insecure-registries": ["${INTERNAL_REGISTRY_ADDRESS}"]
+      }
+      EOF
+    # Verify content (optional)
+    - echo "Verifying /etc/docker/daemon.json content:"
+    - cat /etc/docker/daemon.json
+
     # --- Docker Login ---
-    # Wait a bit for the dind service to be fully ready with the custom command
+    # Wait a bit for the dind service to be ready
     - sleep 15
-    # Attempt login (The Docker daemon running as a service should now trust the registry)
+    # Attempt login (Docker client should now know the registry is insecure and use HTTP)
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "${INTERNAL_REGISTRY_ADDRESS}"
 
 build_medusa:
