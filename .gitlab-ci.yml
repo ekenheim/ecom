@@ -48,7 +48,7 @@ default:
     # --- Docker Login ---
     - sleep 5 # Short wait for dind service
     # Login (Client should now use HTTP based on config.json)
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "${INTERNAL_REGISTRY_ADDRESS}"
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "http://${INTERNAL_REGISTRY_ADDRESS}"
 
 # --- Build Jobs remain the same ---
 build_medusa:
