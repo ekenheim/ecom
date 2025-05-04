@@ -10,9 +10,8 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   # Improve performance with overlay2 driver
   DOCKER_DRIVER: overlay2
-  # Override the repository URL to use the internal IP address via HTTPS
-  # NOTE: This might fail if the certificate is not valid for the IP
-  CI_REPOSITORY_URL: https://192.168.50.187/${CI_PROJECT_PATH}.git
+  # Override the repository URL to use the internal service name via HTTP
+  CI_REPOSITORY_URL: http://gitlab-webservice-default.development.svc.cluster.local:8080/${CI_PROJECT_PATH}.git
   # Force a clean clone instead of fetch
   GIT_STRATEGY: clone
 
@@ -36,9 +35,9 @@ build_medusa:
   script:
     - cd medusa
     - >
-      docker build \\
-        --tag "192.168.50.187/$CI_PROJECT_PATH/medusa:$CI_COMMIT_SHORT_SHA" \\
-        --tag "192.168.50.187/$CI_PROJECT_PATH/medusa:latest" \\
+      docker build \
+        --tag "192.168.50.187/$CI_PROJECT_PATH/medusa:$CI_COMMIT_SHORT_SHA" \
+        --tag "192.168.50.187/$CI_PROJECT_PATH/medusa:latest" \
         .
     - docker push "192.168.50.187/$CI_PROJECT_PATH/medusa:$CI_COMMIT_SHORT_SHA"
     - docker push "192.168.50.187/$CI_PROJECT_PATH/medusa:latest"
@@ -54,11 +53,11 @@ build_storefront:
   script:
     - cd storefront
     - >
-      docker build \\
-        --build-arg NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=$NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY \\
-        --build-arg NEXT_PUBLIC_SEARCH_API_KEY=$NEXT_PUBLIC_SEARCH_API_KEY \\
-        --tag "192.168.50.187/$CI_PROJECT_PATH/storefront:$CI_COMMIT_SHORT_SHA" \\
-        --tag "192.168.50.187/$CI_PROJECT_PATH/storefront:latest" \\
+      docker build \
+        --build-arg NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=$NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY \
+        --build-arg NEXT_PUBLIC_SEARCH_API_KEY=$NEXT_PUBLIC_SEARCH_API_KEY \
+        --tag "192.168.50.187/$CI_PROJECT_PATH/storefront:$CI_COMMIT_SHORT_SHA" \
+        --tag "192.168.50.187/$CI_PROJECT_PATH/storefront:latest" \
         .
     - docker push "192.168.50.187/$CI_PROJECT_PATH/storefront:$CI_COMMIT_SHORT_SHA"
     - docker push "192.168.50.187/$CI_PROJECT_PATH/storefront:latest"
