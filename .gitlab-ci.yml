@@ -16,7 +16,7 @@ variables:
   INTERNAL_REGISTRY_ADDRESS: gitlab-registry.development.svc.cluster.local:5000
 
 services:
-  # Keep the dind service configured with --insecure-registry for daemon-side operations
+  # Configure the docker:dind service itself to trust the internal registry
   - name: docker:dind
     command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--insecure-registry", "${INTERNAL_REGISTRY_ADDRESS}"]
 
@@ -45,24 +45,13 @@ default:
 
     # 5. (Optional) Add known_hosts entry...
 
-    # --- Docker Client Configuration ---
-    # Configure Docker client using multi-line block + HEREDOC
-    # Ensure indentation is correct: `- |` starts the block, subsequent lines are indented.
-    - mkdir -p /etc/docker
-    - | # Start multi-line script block
-      cat <<EOF > /etc/docker/daemon.json
-      {
-        "insecure-registries": ["${INTERNAL_REGISTRY_ADDRESS}"]
-      }
-      EOF
-    # Verify content
-    - echo "Verifying /etc/docker/daemon.json content:"
-    - cat /etc/docker/daemon.json
+    # --- REMOVED Docker Client Configuration ---
+    # Relying solely on the dind service configuration now
 
     # --- Docker Login ---
     # Wait a bit for the dind service to be ready
     - sleep 15
-    # Attempt login (Docker client should now know the registry is insecure and use HTTP)
+    # Attempt login (The dind service daemon should handle the insecure connection)
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "${INTERNAL_REGISTRY_ADDRESS}"
 
 build_medusa:
