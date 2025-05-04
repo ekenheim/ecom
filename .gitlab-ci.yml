@@ -10,17 +10,18 @@ variables:
   GIT_STRATEGY: none
 
   # --- Docker Settings ---
-  DOCKER_HOST: tcp://docker:2375 # Tells docker client how to connect to the dind service
+  DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
-  INTERNAL_REGISTRY_ADDRESS: gitlab-registry.development.svc.cluster.local
+  INTERNAL_REGISTRY_ADDRESS: gitlab-registry.development.svc.cluster.local:5000
 
 services:
-  # Configure the docker:dind service itself to trust the internal registry
+  # Keep dind service configured to allow insecure registry communication from daemon side
   - name: docker:dind
-    command: ["dockerd", "-H", "tcp://0.0.0.0:2375"]
+    command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--insecure-registry", "${INTERNAL_REGISTRY_ADDRESS}"]
+
 stages:
-  - build # Build stage for creating images
+  - build
 
 default:
   image: docker:latest
@@ -28,37 +29,32 @@ default:
     - k8s
   before_script:
     # --- SSH Setup ---
-    # 1. Install SSH client and Git
     - apk add --no-cache openssh-client git
 
-    # 2. Setup SSH Agent
     - eval $(ssh-agent -s)
-
-    # 3. Add the private key from the CI/CD variable SSH_PRIVATE_KEY
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-
-    # 4. Create SSH directory and disable strict host key checking
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - echo -e "Host *\\n\\tStrictHostKeyChecking no\\n\\tUserKnownHostsFile /dev/null" > ~/.ssh/config
 
-    # 5. (Optional) Add known_hosts entry...
-
-    # --- REMOVED Docker Client Configuration ---
-    # Relying solely on the dind service configuration now
+    # --- Docker Client Configuration for Insecure Registry ---
+    # Configure the Docker CLIENT in this container via user config
+    - mkdir -p ~/.docker
+    - echo "{\"insecure-registries\":[\"${INTERNAL_REGISTRY_ADDRESS}\"]}" > ~/.docker/config.json
+    # Verify config.json content
+    - echo "Verifying ~/.docker/config.json content:"
+    - cat ~/.docker/config.json
 
     # --- Docker Login ---
-    # Wait a bit for the dind service to be ready
-    - sleep 15
-    # Attempt login (The dind service daemon should handle the insecure connection)
+    - sleep 5 # Short wait for dind service
+    # Login (Client should now use HTTP based on config.json)
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "${INTERNAL_REGISTRY_ADDRESS}"
 
+# --- Build Jobs remain the same ---
 build_medusa:
   stage: build
   script:
-    # Explicitly clone using SSH URL and configured agent
     - git clone ${CI_SSH_REPOSITORY_URL} . --depth ${GIT_DEPTH:-20}
-    # Proceed with build steps
     - cd medusa
     - >
       docker build \
@@ -67,19 +63,16 @@ build_medusa:
         .
     - docker push "${INTERNAL_REGISTRY_ADDRESS}/${CI_PROJECT_PATH}/medusa:$CI_COMMIT_SHORT_SHA"
     - docker push "${INTERNAL_REGISTRY_ADDRESS}/${CI_PROJECT_PATH}/medusa:latest"
-  # Job-level rules still apply, but only if a pipeline was created by the workflow
   rules:
-    - if: $CI_COMMIT_TAG # Run for tags
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Run for default branch
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - medusa/**/*
 
 build_storefront:
   stage: build
   script:
-    # Explicitly clone using SSH URL and configured agent
     - git clone ${CI_SSH_REPOSITORY_URL} . --depth ${GIT_DEPTH:-20}
-    # Proceed with build steps
     - cd storefront
     - >
       docker build \
@@ -90,9 +83,8 @@ build_storefront:
         .
     - docker push "${INTERNAL_REGISTRY_ADDRESS}/${CI_PROJECT_PATH}/storefront:$CI_COMMIT_SHORT_SHA"
     - docker push "${INTERNAL_REGISTRY_ADDRESS}/${CI_PROJECT_PATH}/storefront:latest"
-  # Job-level rules still apply, but only if a pipeline was created by the workflow
   rules:
-    - if: $CI_COMMIT_TAG # Run for tags
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Run for default branch
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - storefront/**/*
