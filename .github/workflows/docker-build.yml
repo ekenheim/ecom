@@ -72,4 +72,8 @@ jobs:
           labels: ${{ steps.meta_storefront.outputs.labels }}
           build-args: |
             NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY }}
-            NEXT_PUBLIC_SEARCH_API_KEY=${{ secrets.NEXT_PUBLIC_SEARCH_API_KEY }} 
+            NEXT_PUBLIC_SEARCH_API_KEY=${{ secrets.NEXT_PUBLIC_SEARCH_API_KEY }}
+            NEXT_PUBLIC_MEDUSA_BACKEND_URL=${{ secrets.NEXT_PUBLIC_MEDUSA_BACKEND_URL }}
+            NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}
+            NEXT_PUBLIC_DEFAULT_REGION=${{ secrets.NEXT_PUBLIC_DEFAULT_REGION }}
+            NEXT_PUBLIC_STRIPE_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_KEY }} 
