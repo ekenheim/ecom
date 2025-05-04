@@ -43,9 +43,11 @@ FROM base AS production
 
 # Copy built artifacts and necessary files from builder stage
 COPY --from=builder /app/node_modules ./node_modules
-# Copy Medusa server build output from .medusa/server
 COPY --from=builder /app/.medusa/server ./dist
 COPY package.json ./package.json
+COPY --from=builder /app/.yarn ./.yarn
+COPY --from=builder /app/yarn.lock ./yarn.lock
+
 # Add any other necessary files like static assets, config files if needed
 
 # Expose port 9000
