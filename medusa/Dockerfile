@@ -5,6 +5,9 @@ FROM node:20-slim AS base
 # Set the working directory
 WORKDIR /app
 
+# Enable corepack globally for the image
+RUN corepack enable
+
 # Install dependencies required for yarn and potentially other native modules
 RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ && rm -rf /var/lib/apt/lists/*
 
@@ -17,9 +20,6 @@ FROM base AS builder
 
 # Copy package.json and yarn.lock
 COPY package.json yarn.lock* ./
-
-# Enable corepack
-RUN corepack enable
 
 # Configure Yarn to use node_modules linker instead of PnP
 RUN yarn config set nodeLinker node-modules
