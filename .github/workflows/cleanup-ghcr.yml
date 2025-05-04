@@ -1,0 +1,42 @@
+name: Cleanup GHCR Images
+
+on:
+  schedule:
+    # Run weekly on Sunday at midnight UTC
+    - cron: '0 0 * * 0'
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  delete-old-medusa-images:
+    name: Delete Old Medusa Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write # Needs write to delete package versions
+
+    steps:
+      - name: Delete old package versions
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'medusa' # Check GHCR for exact package name
+          package-type: 'container'
+          owner: ${{ github.repository_owner }} # Automatically uses 'ekenheim'
+          min-versions-to-keep: 5 # Keep the 5 most recently pushed versions
+          # token: ${{ secrets.GITHUB_TOKEN }} # Uses the default GITHUB_TOKEN with packages:write permission
+
+  delete-old-storefront-images:
+    name: Delete Old Storefront Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write # Needs write to delete package versions
+
+    steps:
+      - name: Delete old package versions
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'storefront' # Check GHCR for exact package name
+          package-type: 'container'
+          owner: ${{ github.repository_owner }}
+          min-versions-to-keep: 5 # Keep the 5 most recently pushed versions
+          # token: ${{ secrets.GITHUB_TOKEN }} 
