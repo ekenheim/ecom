@@ -32,6 +32,10 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}/medusa
+          tags: |
+            # Add incremental build number tag
+            type=raw,value=0.0.${{ github.run_number }}
+            # Keep default tags like sha, latest, branch name etc.
 
       - name: Build and push Medusa image
         uses: docker/build-push-action@v6
@@ -62,6 +66,10 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}/storefront
+          tags: |
+            # Add incremental build number tag
+            type=raw,value=0.0.${{ github.run_number }}
+            # Keep default tags like sha, latest, branch name etc.
 
       - name: Build and push Storefront image
         uses: docker/build-push-action@v6
