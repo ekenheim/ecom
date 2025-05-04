@@ -5,60 +5,46 @@ workflow:
 
 variables:
   # --- SSH Settings ---
-  # Use the internal SSH address of the gitlab-shell service
-  # Format: ssh://git@<service-name>.<namespace>.svc.cluster.local:<port>/<group>/<project>.git
   CI_SSH_REPOSITORY_URL: ssh://git@gitlab-gitlab-shell.development.svc.cluster.local:22/${CI_PROJECT_PATH}.git
-  GIT_DEPTH: 20 # Optional: control clone depth
-  # Tell the runner not to clone automatically
+  GIT_DEPTH: 20
   GIT_STRATEGY: none
 
   # --- Docker Settings ---
-  # Use Docker-in-Docker service
-  # More info: https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
-  # Improve performance with overlay2 driver
   DOCKER_DRIVER: overlay2
+  # *** Use the EXTERNAL/INGRESS Registry Address ***
+  # The Ingress handles TLS termination for this hostname
+  REGISTRY_ADDRESS: registry.ekenhome.se
 
 services:
-  - docker:dind # Docker-in-Docker
+  # Use standard docker:dind - no need for --insecure-registry when using HTTPS Ingress
+  - name: docker:dind
 
 stages:
-  - build # Build stage for creating images
+  - build
 
 default:
-  image: docker:latest # If using this, installs ssh tools below
+  image: docker:latest
   tags:
     - k8s
   before_script:
     # --- SSH Setup ---
-    # 1. Install SSH client and Git if not present (Needed for docker:latest)
     - apk add --no-cache openssh-client git
 
-    # 2. Setup SSH Agent
     - eval $(ssh-agent -s)
-
-    # 3. Add the private key from the CI/CD variable SSH_PRIVATE_KEY
-    #    Ensure SSH_PRIVATE_KEY variable is configured in GitLab CI/CD settings
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-
-    # 4. Create SSH directory and disable strict host key checking
-    #    (Necessary because the runner pod's known_hosts is ephemeral)
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - echo -e "Host *\\n\\tStrictHostKeyChecking no\\n\\tUserKnownHostsFile /dev/null" > ~/.ssh/config
 
-    # 5. (Optional but recommended) Add GitLab host key to known_hosts
-    #    Get key: ssh-keyscan -p 22 gitlab-gitlab-shell.development.svc.cluster.local
-    #    Store in CI var SSH_KNOWN_HOSTS and uncomment below:
-    #    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
-    #    - chmod 644 ~/.ssh/known_hosts
-    #    Then remove StrictHostKeyChecking no from ~/.ssh/config
-
     # --- Docker Login ---
-    # Explicitly log in to the target registry IP
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 192.168.50.187
+    # No need for client insecure config anymore
+    - sleep 5 # Wait for dind
+    # *** Login using the secure Ingress address ***
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "${REGISTRY_ADDRESS}"
 
+# --- Build Jobs ---
 build_medusa:
   stage: build
   script:
@@ -66,17 +52,18 @@ build_medusa:
     - git clone ${CI_SSH_REPOSITORY_URL} . --depth ${GIT_DEPTH:-20}
     # Proceed with build steps
     - cd medusa
+    # *** Use the secure Ingress address in tags ***
     - >
       docker build \
-        --tag "192.168.50.187/$CI_PROJECT_PATH/medusa:$CI_COMMIT_SHORT_SHA" \
-        --tag "192.168.50.187/$CI_PROJECT_PATH/medusa:latest" \
+        --tag "${REGISTRY_ADDRESS}/${CI_PROJECT_PATH}/medusa:$CI_COMMIT_SHORT_SHA" \
+        --tag "${REGISTRY_ADDRESS}/${CI_PROJECT_PATH}/medusa:latest" \
         .
-    - docker push "192.168.50.187/$CI_PROJECT_PATH/medusa:$CI_COMMIT_SHORT_SHA"
-    - docker push "192.168.50.187/$CI_PROJECT_PATH/medusa:latest"
-  # Job-level rules still apply, but only if a pipeline was created by the workflow
+    # *** Use the secure Ingress address for push ***
+    - docker push "${REGISTRY_ADDRESS}/${CI_PROJECT_PATH}/medusa:$CI_COMMIT_SHORT_SHA"
+    - docker push "${REGISTRY_ADDRESS}/${CI_PROJECT_PATH}/medusa:latest"
   rules:
-    - if: $CI_COMMIT_TAG # Run for tags
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Run for default branch
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - medusa/**/*
 
@@ -87,18 +74,19 @@ build_storefront:
     - git clone ${CI_SSH_REPOSITORY_URL} . --depth ${GIT_DEPTH:-20}
     # Proceed with build steps
     - cd storefront
+    # *** Use the secure Ingress address in tags ***
     - >
       docker build \
         --build-arg NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=$NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY \
         --build-arg NEXT_PUBLIC_SEARCH_API_KEY=$NEXT_PUBLIC_SEARCH_API_KEY \
-        --tag "192.168.50.187/$CI_PROJECT_PATH/storefront:$CI_COMMIT_SHORT_SHA" \
-        --tag "192.168.50.187/$CI_PROJECT_PATH/storefront:latest" \
+        --tag "${REGISTRY_ADDRESS}/${CI_PROJECT_PATH}/storefront:$CI_COMMIT_SHORT_SHA" \
+        --tag "${REGISTRY_ADDRESS}/${CI_PROJECT_PATH}/storefront:latest" \
         .
-    - docker push "192.168.50.187/$CI_PROJECT_PATH/storefront:$CI_COMMIT_SHORT_SHA"
-    - docker push "192.168.50.187/$CI_PROJECT_PATH/storefront:latest"
-  # Job-level rules still apply, but only if a pipeline was created by the workflow
+    # *** Use the secure Ingress address for push ***
+    - docker push "${REGISTRY_ADDRESS}/${CI_PROJECT_PATH}/storefront:$CI_COMMIT_SHORT_SHA"
+    - docker push "${REGISTRY_ADDRESS}/${CI_PROJECT_PATH}/storefront:latest"
   rules:
-    - if: $CI_COMMIT_TAG # Run for tags
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Run for default branch
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - storefront/**/*
