@@ -2,3 +2,4 @@ node_modules
 .medusa
 .env
 **.local
+*.log
