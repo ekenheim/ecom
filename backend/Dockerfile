@@ -1,13 +1,15 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
-COPY package*.json ./
+COPY package*.json tsconfig.json ./
 RUN npm ci
 COPY . .
 RUN npm run build
+RUN ./node_modules/.bin/tsc --outDir .medusa/server --module CommonJS --target ES2021 --esModuleInterop --skipLibCheck medusa-config.ts
 
 FROM node:20-alpine AS runner
 WORKDIR /app
+COPY --from=builder /app/.medusa/server/package*.json ./
+RUN npm install --omit=dev
 COPY --from=builder /app/.medusa/server .
-RUN npm install
 EXPOSE 9000
 CMD ["node", "index.js"]
