@@ -31,6 +31,7 @@ jobs:
           tags: |
             type=sha,prefix=,format=short
             type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value={{date 'YYYYMMDD-HHmmss'}},enable={{is_default_branch}}
 
       - uses: docker/build-push-action@v6
         with:
