@@ -14,4 +14,4 @@ COPY --from=builder /app/.medusa/server .
 RUN chown -R node:node /app
 USER node
 EXPOSE 9000
-CMD ["node", "index.js"]
+CMD ["node", "src/index.js"]
