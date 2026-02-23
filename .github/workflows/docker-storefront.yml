@@ -1,0 +1,50 @@
+name: Build and Push Storefront
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - src/**
+      - public/**
+      - Dockerfile
+      - package.json
+      - yarn.lock
+      - next.config.js
+      - tailwind.config.js
+      - tsconfig.json
+      - .github/workflows/docker-storefront.yml
+
+jobs:
+  build:
+    runs-on: gha-runner-scale-set-ecom
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/ekenheim/ecom/storefront
+          tags: |
+            type=sha,prefix=,format=short
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value={{date 'YYYYMMDD-HHmmss'}},enable={{is_default_branch}}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
