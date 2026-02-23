@@ -4,7 +4,7 @@ COPY package*.json tsconfig.json ./
 RUN npm ci
 COPY . .
 RUN npm run build
-RUN ./node_modules/.bin/tsc --outDir .medusa/server --module CommonJS --target ES2021 --esModuleInterop --skipLibCheck medusa-config.ts
+RUN ./node_modules/.bin/tsc --outDir .medusa/server --module CommonJS --moduleResolution node16 --target ES2021 --esModuleInterop --skipLibCheck medusa-config.ts
 
 FROM node:20-alpine AS runner
 WORKDIR /app
