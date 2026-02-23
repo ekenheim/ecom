@@ -6,7 +6,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn .yarn
-RUN corepack enable && yarn install --immutable
+RUN corepack enable && yarn install
 
 FROM base AS builder
 WORKDIR /app
