@@ -13,6 +13,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      image-tag: ${{ steps.meta.outputs.version }}
     steps:
       - uses: actions/checkout@v4
 
