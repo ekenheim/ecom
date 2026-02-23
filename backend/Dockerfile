@@ -11,5 +11,7 @@ WORKDIR /app
 COPY --from=builder /app/.medusa/server/package*.json ./
 RUN npm install --omit=dev
 COPY --from=builder /app/.medusa/server .
+RUN chown -R node:node /app
+USER node
 EXPOSE 9000
 CMD ["node", "index.js"]
