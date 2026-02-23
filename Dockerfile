@@ -13,6 +13,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/.yarn ./.yarn
 COPY . .
+# Overwrite with the lockfile that was resolved during install so yarn build
+# sees a consistent state between node_modules and the lockfile.
+COPY --from=deps /app/yarn.lock ./yarn.lock
 
 # Build-time env vars required by Next.js — values are injected at runtime via
 # the entrypoint script; these placeholders allow the build to succeed.
