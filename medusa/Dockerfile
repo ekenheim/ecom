@@ -8,9 +8,8 @@ RUN yarn build
 
 FROM node:20-alpine AS runner
 WORKDIR /app
-RUN corepack enable
 COPY --from=builder /app/.medusa/server/package.json ./
-RUN yarn install --production
+RUN npm install --omit=dev
 COPY --from=builder /app/.medusa/server .
 RUN chown -R node:node /app
 USER node
