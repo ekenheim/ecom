@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Old backend directory (kept on disk only as safety backup)
+backend/
+
 # IDEs
 .idea
 .vscode

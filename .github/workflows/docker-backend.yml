@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - backend/**
+      - medusa/**
       - .github/workflows/docker-backend.yml
 
 jobs:
@@ -37,7 +37,7 @@ jobs:
 
       - uses: docker/build-push-action@v6
         with:
-          context: ./backend
+          context: ./medusa
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

@@ -5,14 +5,7 @@ on:
   push:
     branches: [main]
     paths:
-      - src/**
-      - public/**
-      - Dockerfile
-      - package.json
-      - yarn.lock
-      - next.config.js
-      - tailwind.config.js
-      - tsconfig.json
+      - storefront/**
       - .github/workflows/docker-storefront.yml
 
 jobs:
@@ -43,7 +36,7 @@ jobs:
 
       - uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ./storefront
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -53,3 +46,7 @@ jobs:
             NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY }}
             NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}
             NEXT_PUBLIC_DEFAULT_REGION=${{ secrets.NEXT_PUBLIC_DEFAULT_REGION }}
+            NEXT_PUBLIC_STRIPE_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_KEY }}
+            NEXT_PUBLIC_FEATURE_SEARCH_ENABLED=${{ secrets.NEXT_PUBLIC_FEATURE_SEARCH_ENABLED }}
+            NEXT_PUBLIC_SEARCH_ENDPOINT=${{ secrets.NEXT_PUBLIC_SEARCH_ENDPOINT }}
+            NEXT_PUBLIC_SEARCH_API_KEY=${{ secrets.NEXT_PUBLIC_SEARCH_API_KEY }}

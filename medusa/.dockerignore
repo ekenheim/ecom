@@ -1,0 +1,9 @@
+node_modules
+.medusa
+.env
+**.local
+*.log
+integration-tests
+.github
+README.md
+docker-compose.yml
