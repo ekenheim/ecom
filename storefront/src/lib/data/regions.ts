@@ -10,15 +10,7 @@ export const listRegions = async function () {
       cache: "force-cache",
     })
     .then(({ regions }) => regions)
-    .catch((err) => {
-      // During `next build` the backend is not reachable — return an empty
-      // array so generateStaticParams succeeds and pages are served
-      // dynamically at runtime instead.
-      if (process.env.NEXT_PHASE === "phase-production-build") {
-        return [] as HttpTypes.StoreRegion[]
-      }
-      return medusaError(err)
-    })
+    .catch(medusaError)
 }
 
 export const retrieveRegion = async function (id: string) {

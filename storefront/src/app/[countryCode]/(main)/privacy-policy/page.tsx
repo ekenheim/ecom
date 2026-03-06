@@ -8,24 +8,29 @@ export const metadata: Metadata = {
   description: "Learn how we protect your privacy",
 }
 export async function generateStaticParams() {
-  const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
-    regions.flatMap((r) =>
-      r.countries
-        ? r.countries
-            .map((c) => c.iso_2)
-            .filter(
-              (value): value is string =>
-                typeof value === "string" && Boolean(value)
-            )
-        : []
+  try {
+    const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
+      regions.flatMap((r) =>
+        r.countries
+          ? r.countries
+              .map((c) => c.iso_2)
+              .filter(
+                (value): value is string =>
+                  typeof value === "string" && Boolean(value)
+              )
+          : []
+      )
     )
-  )
 
-  const staticParams = countryCodes.map((countryCode) => ({
-    countryCode,
-  }))
+    const staticParams = countryCodes.map((countryCode) => ({
+      countryCode,
+    }))
 
-  return staticParams
+    return staticParams
+  } catch (error) {
+    console.error(error)
+    return []
+  }
 }
 
 export default function PrivacyPolicyPage() {
