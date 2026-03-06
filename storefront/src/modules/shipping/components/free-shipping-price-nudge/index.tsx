@@ -173,8 +173,8 @@ function FreeShippingInline({
               price.target_reached && "from-green-400 to-green-500"
             )}
             style={{ width: `${price.remaining_percentage}%` }}
-          ></div>
-          <div className="bg-neutral-300 h-1 rounded-full w-fit flex-grow"></div>
+          />
+          <div className="bg-neutral-300 h-1 rounded-full w-fit flex-grow" />
         </div>
       </div>
     </div>
@@ -246,8 +246,8 @@ function FreeShippingPopup({
                   price.target_reached && "from-green-400 to-green-500"
                 )}
                 style={{ width: `${price.remaining_percentage}%` }}
-              ></div>
-              <div className="bg-zinc-600 h-1.5 rounded-full w-fit flex-grow"></div>
+              />
+              <div className="bg-zinc-600 h-1.5 rounded-full w-fit flex-grow" />
             </div>
           </div>
         </div>
