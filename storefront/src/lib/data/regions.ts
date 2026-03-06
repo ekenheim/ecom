@@ -10,7 +10,7 @@ export const listRegions = async function () {
       cache: "force-cache",
     })
     .then(({ regions }) => regions)
-    .catch(medusaError)
+    .catch(() => [] as HttpTypes.StoreRegion[])
 }
 
 export const retrieveRegion = async function (id: string) {
