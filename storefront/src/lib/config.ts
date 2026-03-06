@@ -3,7 +3,9 @@ import Medusa, { FetchArgs, FetchInput } from "@medusajs/js-sdk"
 
 let MEDUSA_BACKEND_URL = "http://localhost:9000"
 
-if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
+if (process.env.MEDUSA_BACKEND_URL) {
+  MEDUSA_BACKEND_URL = process.env.MEDUSA_BACKEND_URL
+} else if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
   MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
 }
 
