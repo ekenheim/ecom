@@ -61,7 +61,8 @@ export const LanguageSelect = withReactQueryProvider<{
     return [DEFAULT_OPTION, ...localeOptions]
   }, [locales, currentLocale])
 
-  const handleSelectionChange = (key: ReactAria.Key) => {
+  const handleSelectionChange = (key: ReactAria.Key | null) => {
+    if (key === null) return
     startTransition(async () => {
       await updateLocale(`${key}`)
       router.refresh()
