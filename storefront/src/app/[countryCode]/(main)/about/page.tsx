@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   description: "Learn more about Sofa Society",
 }
 
+export const dynamic = "force-dynamic"
+
 export async function generateStaticParams() {
   try {
     const countryCodes = await listRegions().then((regions: StoreRegion[]) =>

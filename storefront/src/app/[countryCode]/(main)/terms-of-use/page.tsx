@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Terms of Use",
   description: "Learn about our terms of use",
 }
+
+export const dynamic = "force-dynamic"
+
 export async function generateStaticParams() {
   try {
     const countryCodes = await listRegions().then((regions: StoreRegion[]) =>

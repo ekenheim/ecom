@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "Get inspired by our latest collections",
 }
 
+export const dynamic = "force-dynamic"
+
 export async function generateStaticParams() {
   try {
     const countryCodes = await listRegions().then((regions: StoreRegion[]) =>

@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   title: "Cookie Policy",
 }
 
+export const dynamic = "force-dynamic"
+
 export async function generateStaticParams() {
   try {
     const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
