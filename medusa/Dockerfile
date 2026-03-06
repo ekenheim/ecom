@@ -4,6 +4,10 @@ RUN corepack enable
 COPY package.json yarn.lock .yarnrc.yml ./
 RUN yarn install --immutable
 COPY . .
+
+ARG BACKEND_URL
+ENV BACKEND_URL=$BACKEND_URL
+
 RUN yarn build
 
 FROM node:20-alpine AS runner
