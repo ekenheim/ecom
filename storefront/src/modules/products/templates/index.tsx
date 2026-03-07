@@ -4,6 +4,7 @@ import { HttpTypes } from "@medusajs/types"
 import Image from "next/image"
 
 import { collectionMetadataCustomFieldsSchema } from "@lib/util/collections"
+import { strapiMedia, StrapiProduct } from "@lib/strapi"
 import ImageGallery from "@modules/products/components/image-gallery"
 import ProductActions from "@modules/products/components/product-actions"
 import RelatedProducts from "@modules/products/components/related-products"
@@ -25,6 +26,7 @@ type ProductTemplateProps = {
   }[]
   region: HttpTypes.StoreRegion
   countryCode: string
+  content: StrapiProduct | null
 }
 
 const ProductTemplate: React.FC<ProductTemplateProps> = ({
@@ -32,6 +34,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   materials,
   region,
   countryCode,
+  content,
 }) => {
   if (!product || !product.id) {
     return notFound()
@@ -167,6 +170,47 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
             )}
           </Layout>
         )}
+
+      {content && (
+        <Layout className="mb-26 md:mb-36">
+          {content.features && content.features.length > 0 && (
+            <LayoutColumn start={1} end={{ base: 13, md: 5 }}>
+              <h3 className="text-md md:text-xl mb-6">Features</h3>
+              <ul className="space-y-2">
+                {content.features.map((feature) => (
+                  <li key={feature.id} className="flex items-start gap-2 text-xs md:text-base text-grayscale-600">
+                    <span className="mt-1 shrink-0 w-1 h-1 rounded-full bg-grayscale-600" />
+                    {feature.label}
+                  </li>
+                ))}
+              </ul>
+            </LayoutColumn>
+          )}
+          {content.editorial_description && (
+            <LayoutColumn
+              start={{ base: 1, md: content.features?.length ? 6 : 1 }}
+              end={13}
+            >
+              <div
+                className="prose prose-sm md:prose-base max-w-none text-grayscale-600"
+                dangerouslySetInnerHTML={{ __html: content.editorial_description }}
+              />
+            </LayoutColumn>
+          )}
+          {content.seo_image?.url && !content.editorial_description && !content.features?.length && (
+            <LayoutColumn className="col-span-full">
+              <div className="relative aspect-[3/1]">
+                <Image
+                  src={strapiMedia(content.seo_image.url) ?? content.seo_image.url}
+                  alt={content.seo_image.alternativeText ?? product.title ?? ""}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </LayoutColumn>
+          )}
+        </Layout>
+      )}
 
       <Suspense fallback={<SkeletonRelatedProducts />}>
         <RelatedProducts product={product} countryCode={countryCode} />

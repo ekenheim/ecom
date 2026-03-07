@@ -138,6 +138,13 @@ module.exports = defineConfig({
       },
     },
     {
+      resolve: './src/modules/strapi',
+      options: {
+        apiUrl: process.env.STRAPI_ECOM_URL,
+        apiToken: process.env.STRAPI_ECOM_API_TOKEN,
+      },
+    },
+    {
       resolve: './src/modules/meilisearch',
       /**
        * @type {import('./src/modules/meilisearch/types').MeiliSearchPluginOptions}

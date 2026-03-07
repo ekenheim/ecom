@@ -7,50 +7,18 @@ import {
   getProductByHandle,
   getProductFashionDataByHandle,
 } from "@lib/data/products"
+import { getProductContent } from "@lib/data/strapi-content"
+import { strapiMedia } from "@lib/strapi"
 import ProductTemplate from "@modules/products/templates"
+
+// Prevent build-time static generation — the internal cluster Strapi URL is
+// unreachable from GitHub Actions build runners, which would bake fallback
+// (Strapi-less) HTML into the Docker image. With force-dynamic, pages render
+// at runtime inside the cluster where Strapi is available.
+export const dynamic = "force-dynamic"
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
-}
-
-export async function generateStaticParams() {
-  try {
-    const countryCodes = await listRegions().then(
-      (regions) =>
-        regions
-          ?.map((r) => r.countries?.map((c) => c.iso_2))
-          .flat()
-          .filter(Boolean) as string[]
-    )
-
-    if (!countryCodes) {
-      return []
-    }
-
-    const { products } = await sdk.store.product.list(
-      { fields: "handle" },
-      { next: { tags: ["products"] } }
-    )
-
-    const staticParams = countryCodes
-      ?.map((countryCode) =>
-        products.map((product) => ({
-          countryCode,
-          handle: product.handle,
-        }))
-      )
-      .flat()
-      .filter((product) => product.handle)
-
-    return staticParams
-  } catch (error) {
-    console.error(
-      `Failed to generate static paths for product pages: ${
-        error instanceof Error ? error.message : "Unknown error"
-      }.`
-    )
-    return []
-  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -61,19 +29,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     notFound()
   }
 
-  const product = await getProductByHandle(handle, region.id)
+  const [product, content] = await Promise.all([
+    getProductByHandle(handle, region.id),
+    getProductContent(handle),
+  ])
 
   if (!product) {
     notFound()
   }
 
+  const title = content?.seo_title ?? `${product.title} | Medusa Store`
+  const description = content?.seo_description ?? product.title ?? undefined
+  const ogImage =
+    content?.seo_image?.url
+      ? strapiMedia(content.seo_image.url) ?? undefined
+      : product.thumbnail ?? undefined
+
   return {
-    title: `${product.title} | Medusa Store`,
-    description: `${product.title}`,
+    title,
+    description,
     openGraph: {
-      title: `${product.title} | Medusa Store`,
-      description: `${product.title}`,
-      images: product.thumbnail ? [product.thumbnail] : [],
+      title,
+      description: description ?? undefined,
+      images: ogImage ? [ogImage] : [],
     },
   }
 }
@@ -86,9 +64,10 @@ export default async function ProductPage({ params }: Props) {
     notFound()
   }
 
-  const [pricedProduct, fashionData] = await Promise.all([
+  const [pricedProduct, fashionData, content] = await Promise.all([
     getProductByHandle(handle, region.id),
     getProductFashionDataByHandle(handle),
+    getProductContent(handle),
   ])
 
   if (!pricedProduct) {
@@ -101,6 +80,7 @@ export default async function ProductPage({ params }: Props) {
       materials={fashionData.materials}
       region={region}
       countryCode={countryCode}
+      content={content}
     />
   )
 }

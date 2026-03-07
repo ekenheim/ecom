@@ -29,6 +29,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "s3.ekenhome.se",
       },
+      {
+        protocol: "https",
+        hostname: "strapi-ecom.ekenhome.se",
+      },
       ...(S3_HOSTNAME && S3_PATHNAME
         ? [
             {
