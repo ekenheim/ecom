@@ -17,7 +17,7 @@ export const NewsletterForm: React.FC<{ className?: string }> = ({
 
   return (
     <div className={className}>
-      <h2 className="text-md md:text-lg mb-2 md:mb-1">Join our newsletter</h2>
+      <h2 className="text-md md:text-lg mb-2 md:mb-1">Be the first to glow.</h2>
       {isSubmitted ? (
         <p className="max-md:text-xs">
           Thank you for subscribing to our newsletter!
@@ -25,7 +25,7 @@ export const NewsletterForm: React.FC<{ className?: string }> = ({
       ) : (
         <>
           <p className="max-md:text-xs mb-4">
-            We will also send you our discount coupons!
+            Early access to new rituals, origin stories and exclusive offers.
           </p>
           <Form
             onSubmit={() => {

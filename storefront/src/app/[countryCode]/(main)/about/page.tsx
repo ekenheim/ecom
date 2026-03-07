@@ -5,8 +5,8 @@ import { listRegions } from "@lib/data/regions"
 import { Layout, LayoutColumn } from "@/components/Layout"
 
 export const metadata: Metadata = {
-  title: "About",
-  description: "Learn more about Sofa Society",
+  title: "About Tazari",
+  description: "The story behind Tazari's ancestral oils.",
 }
 
 export const dynamic = "force-dynamic"
@@ -42,129 +42,124 @@ export default function AboutPage() {
     <>
       <div className="max-md:pt-18">
         <Image
-          src="/images/content/living-room-gray-three-seater-sofa.png"
+          src="/images/content/tazari-about-hero.png"
           width={2880}
           height={1500}
-          alt="Living room with gray three-seater sofa"
-          className="md:h-screen md:object-cover"
+          alt="Woman in a Moroccan riad courtyard holding a Tazari oil bottle"
+          className="md:h-screen md:object-cover w-full"
+          priority
         />
       </div>
       <div className="pt-8 md:pt-26 pb-26 md:pb-36">
         <Layout>
           <LayoutColumn start={1} end={{ base: 13, lg: 7 }}>
             <h3 className="text-md max-lg:mb-6 md:text-2xl">
-              At Sofa Society, we believe that a sofa is the heart of every
-              home.
+              At Tazari, we believe the best skincare ingredients have existed
+              for centuries.
             </h3>
           </LayoutColumn>
           <LayoutColumn start={{ base: 1, lg: 8 }} end={13}>
             <div className="md:text-md lg:mt-18">
               <p className="mb-5 lg:mb-9">
-                Welcome to Sofa Society, where we believe that comfort and style
-                should be effortlessly intertwined. Our mission is to help you
-                create beautiful, functional spaces that bring warmth and
-                relaxation into your home.
+                Tazari was born from a journey between two worlds — the ancient
+                oil-pressing traditions of southern Morocco and the clean,
+                functional design philosophy of Scandinavia. We found that both
+                cultures had arrived at the same conclusion: that the most
+                powerful things are usually the most simple.
               </p>
               <p>
-                Every piece in our collection is designed with care, blending
-                timeless craftsmanship with modern aesthetics to offer you the
-                perfect balance between form and function.
+                Three oils. Cold-pressed. Undiluted. Bottled without additives
+                or shortcuts. That is Tazari — a meeting point of two heritages
+                united by a shared belief in purity.
               </p>
             </div>
           </LayoutColumn>
           <LayoutColumn>
             <Image
-              src="/images/content/living-room-black-armchair-dark-gray-sofa.png"
+              src="/images/content/tazari-about-interior1.png"
               width={2496}
               height={1404}
-              alt="Living room with black armchair and dark gray sofa"
-              className="mt-26 lg:mt-36 mb-8 lg:mb-26"
+              alt="Argan kernels being cold-pressed in a traditional Moroccan workshop"
+              className="mt-26 lg:mt-36 mb-8 lg:mb-26 w-full"
             />
           </LayoutColumn>
           <LayoutColumn start={1} end={{ base: 13, lg: 8 }}>
             <h3 className="text-md lg:mb-10 mb-6 md:text-2xl">
-              We are here to make your living space a true reflection of your
-              personal style.
+              We are here to make ancient wisdom accessible.
             </h3>
           </LayoutColumn>
           <LayoutColumn start={1} end={{ base: 13, lg: 6 }}>
             <div className="mb-16 lg:mb-26">
               <p className="mb-5 md:mb-9">
-                At the heart of our brand is a deep commitment to quality. We
-                understand that a sofa isn&apos;t just another piece of
-                furniture; it&apos;s where you unwind, gather with loved ones,
-                and make memories. That&apos;s why we source only the finest
-                materials and fabrics, ensuring that every sofa we offer is
-                built to last.
+                Every bottle of Tazari Glow begins with full traceability. Our
+                Argan oil is sourced directly from a women&apos;s cooperative in
+                the Souss Valley. Our Jojoba is cold-pressed in small batches
+                from certified organic farms. Our Squalane is extracted from
+                Spanish olives grown without pesticides.
               </p>
               <p>
-                From luxurious leathers and soft linens to high-performance
-                textiles, each fabric is carefully selected for its durability
-                and beauty. Our attention to detail extends to every stitch and
-                seam, guaranteeing that your sofa will not only look stunning
-                but will also withstand the test of time.
+                We cold-press every oil to preserve the full spectrum of fatty
+                acids, vitamins, and antioxidants. Nothing is refined. Nothing
+                is diluted. What goes into the bottle is exactly what comes from
+                the source.
               </p>
             </div>
           </LayoutColumn>
           <LayoutColumn start={{ base: 2, lg: 1 }} end={{ base: 12, lg: 7 }}>
             <Image
-              src="/images/content/gray-one-seater-sofa-wooden-coffee-table.png"
+              src="/images/content/tazari-about-portrait.png"
               width={1200}
               height={1600}
-              alt="Gray one-seater sofa and wooden coffee table"
+              alt="Tazari oil bottle on leather books beside a Moroccan brass tea glass"
               className="mb-16 lg:mb-46"
             />
           </LayoutColumn>
           <LayoutColumn start={{ base: 1, lg: 8 }} end={13}>
             <div className="mb-6 lg:mb-20 xl:mb-36">
               <p>
-                Our design philosophy revolves around creating pieces that are
-                both beautiful and practical. Inspired by Scandinavian
-                simplicity, modern luxury, and timeless classics, our
-                collections are curated to suit a wide variety of tastes and
-                lifestyles. We understand that every home is different, so we
-                offer a diverse range of styles, colors, and textures to help
-                you find the perfect fit. Whether you prefer sleek modern lines
-                or soft, inviting silhouettes, we have something to suit every
-                space and personality.
+                Our philosophy is rooted in restraint. We do not add
+                preservatives, synthetic fragrances, or carrier fillers because
+                we do not need to. The three oils we have chosen are inherently
+                stable, inherently effective, and inherently complete. Purity is
+                not a marketing claim for us — it is the only way we know how
+                to make a product we can stand behind.
               </p>
             </div>
             <div className="md:text-md max-lg:mb-26">
               <p>
-                We believe that great design should be environmentally
-                conscious, which is why we strive to minimise our environmental
-                footprint through responsible sourcing and production practices.
-                Our commitment to sustainability ensures that our products are
-                not only beautiful but also kind to the planet.
+                We are committed to responsible sourcing, minimal packaging, and
+                partnering with cooperatives that invest in the communities
+                where these ingredients grow. When you buy Tazari, you support
+                the people and the land that make it possible.
               </p>
             </div>
           </LayoutColumn>
         </Layout>
         <Image
-          src="/images/content/living-room-gray-three-seater-puffy-sofa.png"
+          src="/images/content/tazari-about-interior2.png"
           width={2880}
           height={1618}
-          alt="Living room with gray three-seater puffy sofa"
-          className="mb-8 lg:mb-26"
+          alt="Tazari oil bottle on a Scandinavian bathroom shelf"
+          className="mb-8 lg:mb-26 w-full"
         />
         <Layout>
           <LayoutColumn start={1} end={{ base: 13, lg: 7 }}>
             <h3 className="text-md max-lg:mb-6 md:text-2xl">
-              Our customers are at the center of everything we do!
+              Our customers are at the center of everything we do.
             </h3>
           </LayoutColumn>
           <LayoutColumn start={{ base: 1, lg: 8 }} end={13}>
             <div className="md:text-md lg:mt-18">
               <p className="mb-5 lg:mb-9">
-                Our team is here to help guide you through the process, offering
-                personalised support to ensure that you find exactly what
-                you&apos;re looking for.
+                We know that changing your skincare routine takes trust. Our
+                team is here to help — whether you have questions about which
+                oil is right for your skin type, how to build a ritual, or
+                anything else on your mind.
               </p>
               <p>
-                We&apos;re not just selling sofas - we&apos;re helping you
-                create spaces where you can relax, recharge, and make lasting
-                memories. Thank you for choosing Sofa Society to be a part of
-                your home!
+                We are not just selling oil. We are inviting you into a ritual
+                that has nourished skin and hair for generations. Thank you for
+                choosing Tazari.
               </p>
             </div>
           </LayoutColumn>

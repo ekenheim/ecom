@@ -44,7 +44,7 @@ export default function PrivacyPolicyPage() {
         end={{ base: 13, lg: 11, xl: 10 }}
       >
         <h1 className="text-lg md:text-2xl mb-16 md:mb-25">
-          Privacy Policy for Sofa Society
+          Privacy Policy for Tazari
         </h1>
       </LayoutColumn>
       <LayoutColumn
@@ -53,7 +53,7 @@ export default function PrivacyPolicyPage() {
         className="article"
       >
         <p>
-          At Sofa Society, we value your privacy and are committed to protecting
+          At Tazari, we value your privacy and are committed to protecting
           your personal information. This Privacy Policy outlines how we
           collect, use, disclose, and safeguard your data when you interact with
           our website, services, and products. By using our platform, you
@@ -172,7 +172,7 @@ export default function PrivacyPolicyPage() {
           contact us at:
         </p>
         <p>
-          Email: privacy@sofasociety.com
+          Email: hello@tazari.com
           <br />
           Address: Skärgårdsvägen 12, 124 55 Stockholm
         </p>

@@ -26,15 +26,15 @@ export default async function LoginPage({
   return (
     <div className="flex min-h-screen">
       <Image
-        src="/images/content/gray-backrest-sofa-wooden-coffee-table.png"
+        src="/images/content/tazari-auth-login.png"
         width={1440}
         height={1632}
-        alt="Gray backrest sofa and wooden coffee table"
+        alt="Golden oil drop on fingertip with Moroccan tile background"
         className="max-lg:hidden lg:w-1/2 shrink-0 object-cover"
       />
       <div className="shrink-0 max-w-100 lg:max-w-96 w-full mx-auto pt-30 lg:pt-37 pb-16 max-sm:px-4">
         <h1 className="text-xl md:text-2xl mb-10 md:mb-16">
-          Welcome back to Sofa Society!
+          Welcome back to Tazari.
         </h1>
         <LoginForm
           className="mb-10 md:mb-15"

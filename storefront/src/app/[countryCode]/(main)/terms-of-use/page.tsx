@@ -44,7 +44,7 @@ export default function TermsOfUsePage() {
         end={{ base: 13, lg: 11, xl: 10 }}
       >
         <h1 className="text-lg md:text-2xl mb-16 md:mb-25">
-          Terms of Use for Sofa Society
+          Terms of Use for Tazari
         </h1>
       </LayoutColumn>
       <LayoutColumn
@@ -53,7 +53,7 @@ export default function TermsOfUsePage() {
         className="article"
       >
         <p>
-          Welcome to Sofa Society. These Terms of Use govern your access to and
+          Welcome to Tazari. These Terms of Use govern your access to and
           use of our website, products, and services. By accessing or using our
           platform, you agree to be bound by these terms and conditions. If you
           do not agree with any part of these terms, please do not use our
@@ -122,15 +122,15 @@ export default function TermsOfUsePage() {
         </p>
         <h2>5. Limitation of Liability:</h2>
         <p>
-          To the maximum extent permitted by law, Sofa Society and its
-          affiliates, officers, directors, employees, and agents shall not be
-          liable for any direct, indirect, incidental, consequential, or special
-          damages arising out of or in connection with your use of our website,
-          even if advised of the possibility of such damages.
+          To the maximum extent permitted by law, Tazari and its affiliates,
+          officers, directors, employees, and agents shall not be liable for any
+          direct, indirect, incidental, consequential, or special damages
+          arising out of or in connection with your use of our website, even if
+          advised of the possibility of such damages.
         </p>
         <h2>6. Indemnification:</h2>
         <p>
-          You agree to indemnify, defend, and hold harmless Sofa Society and its
+          You agree to indemnify, defend, and hold harmless Tazari and its
           affiliates, officers, directors, employees, and agents from and
           against any claims, liabilities, damages, losses, and expenses,
           including reasonable attorney&apos;s fees, arising out of or in
@@ -139,12 +139,12 @@ export default function TermsOfUsePage() {
         </p>
         <h2>7. Modifications to the Terms:</h2>
         <p>
-          You agree to indemnify, defend, and hold harmless Sofa Society and its
-          affiliates, officers, directors, employees, and agents from and
-          against any claims, liabilities, damages, losses, and expenses,
-          including reasonable attorney&apos;s fees, arising out of or in
-          connection with your use of our website or violation of these Terms of
-          Use.
+          Tazari reserves the right to update or modify these Terms of Use at
+          any time without prior notice. Changes will be effective immediately
+          upon posting to the website. Your continued use of our website
+          following the posting of any changes constitutes your acceptance of
+          the revised terms. We encourage you to review these terms periodically
+          to stay informed of any updates.
         </p>
         <h2>8. Governing Law and Jurisdiction:</h2>
         <p>
