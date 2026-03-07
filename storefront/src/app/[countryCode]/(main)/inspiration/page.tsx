@@ -7,8 +7,9 @@ import { LocalizedLink } from "@/components/LocalizedLink"
 import { CollectionsSection } from "@/components/CollectionsSection"
 
 export const metadata: Metadata = {
-  title: "Inspiration",
-  description: "Get inspired by our latest collections",
+  title: "Inspiration — Tazari",
+  description:
+    "Discover the rituals, ingredients and stories behind Tazari's ancestral oils.",
 }
 
 export const dynamic = "force-dynamic"
@@ -42,158 +43,168 @@ export async function generateStaticParams() {
 export default function InspirationPage() {
   return (
     <>
+      {/* Section 1 — The Glow Ritual */}
       <div className="max-md:pt-18">
         <Image
-          src="/images/content/living-room-dark-green-three-seater-sofa.png"
+          src="/images/content/tazari-insp-1.png"
           width={2880}
           height={1500}
-          alt="Living room with dark green three-seater sofa"
-          className="md:h-screen md:object-cover mb-8 md:mb-26"
+          alt="Golden oil drop falling from a dropper onto glowing skin"
+          className="md:h-screen md:object-cover mb-8 md:mb-26 w-full"
+          priority
         />
       </div>
       <div className="pb-26 md:pb-36">
         <Layout>
           <LayoutColumn start={1} end={{ base: 13, md: 8 }}>
             <h3 className="text-md mb-6 md:mb-16 md:text-2xl">
-              The Astrid Curve sofa is a masterpiece of minimalism and luxury.
+              Three drops. That is the ritual.
             </h3>
             <div className="md:text-md max-md:mb-16 max-w-135">
               <p>
-                Our design philosophy revolves around creating pieces that are
-                both beautiful and practical. Inspired by Scandinavian
-                simplicity, modern luxury, and timeless classics.
+                Morning or evening, the ritual is the same. Warm three drops of
+                Tazari Glow between your palms, press gently into clean skin,
+                work through hair ends, or smooth over dry body. The oils absorb
+                in seconds. The glow lasts all day.
               </p>
             </div>
           </LayoutColumn>
           <LayoutColumn start={{ base: 1, md: 9 }} end={13}>
-            <LocalizedLink href="/products/astrid-curve">
+            <LocalizedLink href="/store">
               <Image
-                src="/images/content/dark-gray-three-seater-sofa.png"
+                src="/images/content/tazari-product-card.png"
                 width={768}
                 height={572}
-                alt="Dark gray three-seater sofa"
+                alt="Tazari Glow Elixir dropper bottle"
                 className="mb-4 md:mb-6"
               />
               <div className="flex justify-between">
                 <div>
-                  <p className="mb-1">Astrid Curve</p>
+                  <p className="mb-1">Tazari Glow Elixir</p>
                   <p className="text-grayscale-500 text-xs">
-                    Scandinavian Simplicity
+                    Argan · Jojoba · Squalane
                   </p>
                 </div>
                 <div>
-                  <p className="font-semibold">1500€</p>
+                  <p className="font-semibold text-tazari-700">Shop Now</p>
                 </div>
               </div>
             </LocalizedLink>
           </LayoutColumn>
+
+          {/* Section 2 — The Three Oils */}
           <LayoutColumn>
             <Image
-              src="/images/content/living-room-brown-armchair-gray-corner-sofa.png"
+              src="/images/content/tazari-about.png"
               width={2496}
               height={1404}
-              alt="Living room with brown armchair and gray corner sofa"
-              className="mt-26 md:mt-36 mb-8 md:mb-26"
+              alt="Argan, Jojoba and Squalane ingredients flat-lay with Tazari bottle"
+              className="mt-26 md:mt-36 mb-8 md:mb-26 w-full"
             />
           </LayoutColumn>
           <LayoutColumn start={1} end={{ base: 13, md: 8 }}>
             <h3 className="text-md mb-6 md:mb-16 md:text-2xl">
-              Haven Sofas have minimalistic designs, neutral colors, and
-              high-quality textures.
+              Three oils. One origin story.
             </h3>
             <div className="md:text-md max-md:mb-16 max-w-135">
               <p>
-                Perfect for those who seek comfort with a clean and understated
-                aesthetic. This collection brings the essence of Scandinavian
-                elegance to your living room.
+                Argan from the sun-dried valleys of southern Morocco. Jojoba
+                from the Sonoran desert, where it has been used for generations
+                to protect skin against extreme conditions. Squalane from
+                Spanish olives — light, stable, and identical in structure to
+                what your own skin produces. Each oil was chosen because people
+                trusted it long before we did.
               </p>
             </div>
           </LayoutColumn>
           <LayoutColumn start={{ base: 1, md: 9 }} end={13}>
             <LocalizedLink
-              href="/products/nordic-haven"
-              className="mb-8 md:mb-16 inline-block"
+              href="/store"
+              className="mb-8 md:mb-16 inline-block w-full"
             >
               <Image
-                src="/images/content/gray-three-seater-sofa.png"
+                src="/images/content/tazari-product-card.png"
                 width={768}
                 height={572}
-                alt="Gray three-seater sofa"
+                alt="Tazari Glow Elixir — face ritual"
                 className="mb-4 md:mb-6"
               />
               <div className="flex justify-between">
                 <div>
-                  <p className="mb-1">Nordic Haven</p>
+                  <p className="mb-1">Face Ritual</p>
                   <p className="text-grayscale-500 text-xs">
-                    Scandinavian Simplicity
+                    Repairs &amp; protects
                   </p>
                 </div>
                 <div>
-                  <p className="font-semibold">1500€</p>
+                  <p className="font-semibold text-tazari-700">Shop Now</p>
                 </div>
               </div>
             </LocalizedLink>
-            <LocalizedLink href="/products/nordic-breeze">
+            <LocalizedLink href="/store" className="inline-block w-full">
               <Image
-                src="/images/content/gray-arm-chair.png"
+                src="/images/content/tazari-hero.png"
                 width={768}
                 height={572}
-                alt="Gray arm chair"
-                className="mb-4 md:mb-6"
+                alt="Tazari Glow Elixir — hair and body"
+                className="mb-4 md:mb-6 object-cover aspect-[4/3]"
               />
               <div className="flex justify-between">
                 <div>
-                  <p className="mb-1">Nordic Breeze</p>
+                  <p className="mb-1">Hair &amp; Body</p>
                   <p className="text-grayscale-500 text-xs">
-                    Scandinavian Simplicity
+                    Softens &amp; seals
                   </p>
                 </div>
                 <div>
-                  <p className="font-semibold">1200€</p>
+                  <p className="font-semibold text-tazari-700">Shop Now</p>
                 </div>
               </div>
             </LocalizedLink>
           </LayoutColumn>
         </Layout>
+
+        {/* Section 3 — Face. Body. Hair. */}
         <Image
-          src="/images/content/living-room-gray-two-seater-puffy-sofa.png"
+          src="/images/content/tazari-insp-3.png"
           width={2880}
           height={1618}
-          alt="Living room with gray two-seater puffy sofa"
-          className="md:h-screen md:object-cover mt-26 md:mt-36 mb-8 md:mb-26"
+          alt="Woman with glowing skin and lustrous hair in soft Nordic light"
+          className="md:h-screen md:object-cover mt-26 md:mt-36 mb-8 md:mb-26 w-full"
         />
         <Layout>
           <LayoutColumn start={1} end={{ base: 13, md: 8 }}>
             <h3 className="text-md mb-6 md:mb-16 md:text-2xl">
-              Oslo Drift is infused with playful textures and vibrant patterns
-              with eclectic vibes.
+              One oil. No limits on where you use it.
             </h3>
             <div className="md:text-md max-md:mb-16 max-w-135">
               <p>
-                Whether you&apos;re looking for bold statement pieces or subtle
-                elegance, this collection elevates your home with a touch of
-                glamour, sophistication, and unmatched coziness.
+                Most oils are formulated for one purpose. Tazari Glow was
+                formulated without that constraint. The same bottle goes from
+                your face at 7am to your hair before bed. It works on every
+                skin type because the three oils it contains are oils your body
+                already recognizes.
               </p>
             </div>
           </LayoutColumn>
           <LayoutColumn start={{ base: 1, md: 9 }} end={13}>
-            <LocalizedLink href="/products/oslo-drift">
+            <LocalizedLink href="/store">
               <Image
-                src="/images/content/white-two-seater-sofa.png"
+                src="/images/content/tazari-product-card.png"
                 width={768}
                 height={572}
-                alt="White two-seater sofa"
+                alt="Tazari Glow Elixir — face, body and hair"
                 className="mb-4 md:mb-6"
               />
               <div className="flex justify-between">
                 <div>
-                  <p className="mb-1">Oslo Drift</p>
+                  <p className="mb-1">Tazari Glow Elixir</p>
                   <p className="text-grayscale-500 text-xs">
-                    Scandinavian Simplicity
+                    Face · Body · Hair
                   </p>
                 </div>
                 <div>
-                  <p className="font-semibold">1500€</p>
+                  <p className="font-semibold text-tazari-700">Shop Now</p>
                 </div>
               </div>
             </LocalizedLink>

@@ -30,6 +30,13 @@ module.exports = {
         900: "#BD3207",
         primary: "#DF4718",
       },
+      tazari: {
+        950: "#3B1A08",
+        700: "#8B3A10",
+        500: "#C2651F",
+        300: "#E8A96A",
+        50: "#FBF0E4",
+      },
       yellow: "#FFEFB7",
       transparent: "rgba(0,0,0,0)",
       current: "currentColor",
