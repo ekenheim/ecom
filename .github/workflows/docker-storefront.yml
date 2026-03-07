@@ -43,11 +43,12 @@ jobs:
           cache-from: type=registry,ref=ghcr.io/ekenheim/ecom/storefront:buildcache
           cache-to: type=registry,ref=ghcr.io/ekenheim/ecom/storefront:buildcache,mode=max
           build-args: |
+            NEXT_PUBLIC_MEDUSA_BACKEND_URL=${{ secrets.BACKEND_URL }}
             NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY }}
             NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}
             NEXT_PUBLIC_DEFAULT_REGION=${{ secrets.NEXT_PUBLIC_DEFAULT_REGION }}
-            NEXT_PUBLIC_FEATURE_SEARCH_ENABLED=${{ secrets.NEXT_PUBLIC_FEATURE_SEARCH_ENABLED }}
+            NEXT_PUBLIC_FEATURE_SEARCH_ENABLED=true
             NEXT_PUBLIC_SEARCH_ENDPOINT=${{ secrets.NEXT_PUBLIC_SEARCH_ENDPOINT }}
             NEXT_PUBLIC_SEARCH_API_KEY=${{ secrets.NEXT_PUBLIC_SEARCH_API_KEY }}
-            NEXT_PUBLIC_MEILISEARCH_HOST=${{ secrets.NEXT_PUBLIC_MEILISEARCH_HOST }}
-            NEXT_PUBLIC_MEILISEARCH_SEARCH_API_KEY=${{ secrets.NEXT_PUBLIC_MEILISEARCH_SEARCH_API_KEY }}
+            NEXT_PUBLIC_MEILISEARCH_HOST=${{ secrets.NEXT_PUBLIC_SEARCH_ENDPOINT }}
+            NEXT_PUBLIC_MEILISEARCH_SEARCH_API_KEY=${{ secrets.NEXT_PUBLIC_SEARCH_API_KEY }}
