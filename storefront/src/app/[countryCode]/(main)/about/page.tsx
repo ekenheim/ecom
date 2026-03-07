@@ -58,10 +58,7 @@ export default async function AboutPage() {
                     end={13}
                   >
                     {/* eslint-disable-next-line react/no-danger */}
-                    <div
-                      className="md:text-md lg:mt-18"
-                      dangerouslySetInnerHTML={{ __html: section.body }}
-                    />
+                    <div className="md:text-md lg:mt-18" dangerouslySetInnerHTML={{ __html: section.body }} />
                   </LayoutColumn>
                 )}
                 {imageSrc && (

@@ -55,10 +55,7 @@ export default async function InspirationPage() {
                   )}
                   {section.body && (
                     // eslint-disable-next-line react/no-danger
-                    <div
-                      className="md:text-md max-md:mb-16 max-w-135"
-                      dangerouslySetInnerHTML={{ __html: section.body }}
-                    />
+                    <div className="md:text-md max-md:mb-16 max-w-135" dangerouslySetInnerHTML={{ __html: section.body }} />
                   )}
                 </LayoutColumn>
                 {imageSrc && (
