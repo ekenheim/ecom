@@ -20,6 +20,13 @@ const monaSans = Mona_Sans({
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" data-mode="light" className="antialiased">
+      <head>
+        <script
+          src="https://rybbit.ekenhome.se/api/script.js"
+          data-site-id="8693e828f34b"
+          defer
+        />
+      </head>
       <body className={`${monaSans.className}`}>
         <main className="relative">{props.children}</main>
       </body>
