@@ -191,6 +191,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
               start={{ base: 1, md: content.features?.length ? 6 : 1 }}
               end={13}
             >
+              {/* eslint-disable-next-line react/no-danger */}
               <div
                 className="prose prose-sm md:prose-base max-w-none text-grayscale-600"
                 dangerouslySetInnerHTML={{ __html: content.editorial_description }}
