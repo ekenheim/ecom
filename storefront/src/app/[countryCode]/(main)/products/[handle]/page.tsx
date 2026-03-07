@@ -1,19 +1,16 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
-import { getRegion } from "@lib/data/regions"
+import { sdk } from "@lib/config"
+import { getRegion, listRegions } from "@lib/data/regions"
 import {
   getProductByHandle,
   getProductFashionDataByHandle,
 } from "@lib/data/products"
-import { getProductContent } from "@lib/data/strapi-content"
-import { strapiMedia } from "@lib/strapi"
 import ProductTemplate from "@modules/products/templates"
 
-// Prevent build-time static generation — the internal cluster Strapi URL is
-// unreachable from GitHub Actions build runners, which would bake fallback
-// (Strapi-less) HTML into the Docker image. With force-dynamic, pages render
-// at runtime inside the cluster where Strapi is available.
+// Prevent build-time static generation — build runners cannot reach the
+// internal cluster URLs for backend services during the Docker build.
 export const dynamic = "force-dynamic"
 
 type Props = {
@@ -28,29 +25,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     notFound()
   }
 
-  const [product, content] = await Promise.all([
-    getProductByHandle(handle, region.id),
-    getProductContent(handle),
-  ])
+  const product = await getProductByHandle(handle, region.id)
 
   if (!product) {
     notFound()
   }
 
-  const title = content?.seo_title ?? `${product.title} | Medusa Store`
-  const description = content?.seo_description ?? product.title ?? undefined
-  const ogImage =
-    content?.seo_image?.url
-      ? strapiMedia(content.seo_image.url) ?? undefined
-      : product.thumbnail ?? undefined
-
   return {
-    title,
-    description,
+    title: `${product.title} | Medusa Store`,
+    description: `${product.title}`,
     openGraph: {
-      title,
-      description: description ?? undefined,
-      images: ogImage ? [ogImage] : [],
+      title: `${product.title} | Medusa Store`,
+      description: `${product.title}`,
+      images: product.thumbnail ? [product.thumbnail] : [],
     },
   }
 }
@@ -63,10 +50,9 @@ export default async function ProductPage({ params }: Props) {
     notFound()
   }
 
-  const [pricedProduct, fashionData, content] = await Promise.all([
+  const [pricedProduct, fashionData] = await Promise.all([
     getProductByHandle(handle, region.id),
     getProductFashionDataByHandle(handle),
-    getProductContent(handle),
   ])
 
   if (!pricedProduct) {
@@ -79,7 +65,6 @@ export default async function ProductPage({ params }: Props) {
       materials={fashionData.materials}
       region={region}
       countryCode={countryCode}
-      content={content}
     />
   )
 }

@@ -2,6 +2,8 @@ import { Metadata } from "next"
 import Image from "next/image"
 import { getRegion } from "@lib/data/regions"
 import { getProductTypesList } from "@lib/data/product-types"
+import { getActiveMarketingBanners } from "@lib/data/strapi-content"
+import { strapiMedia } from "@lib/strapi"
 import { Layout, LayoutColumn } from "@/components/Layout"
 import { LocalizedLink } from "@/components/LocalizedLink"
 import { CollectionsSection } from "@/components/CollectionsSection"
@@ -67,15 +69,27 @@ export default async function Home({
     return null
   }
 
+  const heroBanners = await getActiveMarketingBanners("homepage_hero")
+  const hero = heroBanners[0] ?? null
+
+  const heroImageSrc =
+    (hero?.image?.url ? strapiMedia(hero.image.url) : null) ??
+    "/images/content/tazari-hero.png"
+  const heroHeadline = hero?.title ?? "3 Ancestral Oils.\nOne Ritual.\nTotal Glow."
+  const heroSubtext =
+    hero?.subtitle ?? "No BS. Pure oils for face, body & hair."
+  const heroCtaLabel = hero?.cta?.label ?? "Shop Now"
+  const heroCtaUrl = hero?.cta?.url ?? "/store"
+
   return (
     <>
       {/* Hero — full-screen image with text overlay */}
       <div className="relative max-md:pt-18">
         <Image
-          src="/images/content/tazari-hero.png"
+          src={heroImageSrc}
           width={2880}
           height={1500}
-          alt="Tazari ancestral oil dropper bottle on Moroccan terracotta surface"
+          alt={hero?.image?.alternativeText ?? "Tazari ancestral oil dropper bottle on Moroccan terracotta surface"}
           className="md:h-screen w-full object-cover"
           priority
         />
@@ -86,17 +100,17 @@ export default async function Home({
           <p className="text-white text-xs md:text-base uppercase tracking-widest mb-3 md:mb-4 opacity-80">
             Moroccan Purity. Scandinavian Simplicity.
           </p>
-          <h1 className="text-white text-lg md:text-3xl mb-4 md:mb-8 leading-tight">
-            3 Ancestral Oils.<br />One Ritual.<br />Total Glow.
+          <h1 className="text-white text-lg md:text-3xl mb-4 md:mb-8 leading-tight whitespace-pre-line">
+            {heroHeadline}
           </h1>
           <p className="text-white text-xs md:text-base mb-6 md:mb-10 opacity-80">
-            No BS. Pure oils for face, body &amp; hair.
+            {heroSubtext}
           </p>
           <LocalizedLink
-            href="/store"
+            href={heroCtaUrl}
             className="inline-block bg-white text-black text-xs md:text-base font-medium px-8 py-3 rounded-full hover:bg-tazari-50 transition-colors"
           >
-            Shop Now
+            {heroCtaLabel}
           </LocalizedLink>
         </div>
       </div>

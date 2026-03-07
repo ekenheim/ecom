@@ -4,11 +4,6 @@ import "server-only"
 // Types — Strapi v5 flat response structure (no .attributes wrapper)
 // ---------------------------------------------------------------------------
 
-export interface StrapiFeature {
-  id: number
-  label: string
-}
-
 export interface StrapiSeoImage {
   url: string
   alternativeText?: string | null
@@ -22,16 +17,25 @@ export interface StrapiCta {
   variant: "primary" | "secondary"
 }
 
-export interface StrapiProduct {
+export interface StrapiContentSection {
+  id: number
+  heading: string | null
+  body: string | null
+  image: StrapiSeoImage | null
+}
+
+export interface StrapiAboutPage {
   id: number
   documentId: string
-  medusa_id: string | null
-  handle: string
-  seo_title: string | null
-  seo_description: string | null
-  seo_image: StrapiSeoImage | null
-  editorial_description: string | null
-  features: StrapiFeature[]
+  hero_image: StrapiSeoImage | null
+  sections: StrapiContentSection[]
+}
+
+export interface StrapiInspirationPage {
+  id: number
+  documentId: string
+  hero_image: StrapiSeoImage | null
+  sections: StrapiContentSection[]
 }
 
 export interface StrapiMarketingBanner {
@@ -46,16 +50,7 @@ export interface StrapiMarketingBanner {
     | "homepage_hero"
     | "homepage_secondary"
     | "plp_top"
-    | "pdp_sidebar"
     | null
-}
-
-export interface StrapiLandingPage {
-  id: number
-  documentId: string
-  slug: string
-  title: string
-  blocks: unknown[]
 }
 
 export interface StrapiListResponse<T> {

@@ -1,18 +1,24 @@
 import {
   strapiGet,
   StrapiListResponse,
-  StrapiProduct,
+  StrapiSingleResponse,
+  StrapiAboutPage,
+  StrapiInspirationPage,
   StrapiMarketingBanner,
-  StrapiLandingPage,
 } from "@lib/strapi"
 
-export async function getProductContent(
-  handle: string,
-): Promise<StrapiProduct | null> {
-  const res = await strapiGet<StrapiListResponse<StrapiProduct>>(
-    `/api/products?filters[handle][$eq]=${encodeURIComponent(handle)}&populate=seo_image,features`,
+export async function getAboutPageContent(): Promise<StrapiAboutPage | null> {
+  const res = await strapiGet<StrapiSingleResponse<StrapiAboutPage>>(
+    "/api/about-page?populate=hero_image,sections.image",
   )
-  return res?.data?.[0] ?? null
+  return res?.data ?? null
+}
+
+export async function getInspirationPageContent(): Promise<StrapiInspirationPage | null> {
+  const res = await strapiGet<StrapiSingleResponse<StrapiInspirationPage>>(
+    "/api/inspiration-page?populate=hero_image,sections.image",
+  )
+  return res?.data ?? null
 }
 
 export async function getActiveMarketingBanners(
@@ -25,13 +31,4 @@ export async function getActiveMarketingBanners(
     `/api/marketing-banners?filters[active][$eq]=true${positionFilter}&populate=image,cta`,
   )
   return res?.data ?? []
-}
-
-export async function getLandingPage(
-  slug: string,
-): Promise<StrapiLandingPage | null> {
-  const res = await strapiGet<StrapiListResponse<StrapiLandingPage>>(
-    `/api/landing-pages?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=blocks`,
-  )
-  return res?.data?.[0] ?? null
 }
