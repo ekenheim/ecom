@@ -43,7 +43,7 @@ export interface StrapiMarketingBanner {
   documentId: string
   title: string
   subtitle: string | null
-  cta: StrapiCta | null
+  cta: StrapiCta[]
   image: StrapiSeoImage | null
   active: boolean
   position:

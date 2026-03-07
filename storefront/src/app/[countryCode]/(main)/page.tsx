@@ -78,8 +78,8 @@ export default async function Home({
   const heroHeadline = hero?.title ?? "3 Ancestral Oils.\nOne Ritual.\nTotal Glow."
   const heroSubtext =
     hero?.subtitle ?? "No BS. Pure oils for face, body & hair."
-  const heroCtaLabel = hero?.cta?.label ?? "Shop Now"
-  const heroCtaUrl = hero?.cta?.url ?? "/store"
+  const heroCtaLabel = hero?.cta?.[0]?.label ?? "Shop Now"
+  const heroCtaUrl = hero?.cta?.[0]?.url ?? "/store"
 
   return (
     <>

@@ -1,5 +1,4 @@
 import { Metadata } from "next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Mona_Sans } from "next/font/google"
 import { getBaseURL } from "@lib/util/env"
 
@@ -23,7 +22,6 @@ export default function RootLayout(props: { children: React.ReactNode }) {
     <html lang="en" data-mode="light" className="antialiased">
       <body className={`${monaSans.className}`}>
         <main className="relative">{props.children}</main>
-        <SpeedInsights />
       </body>
     </html>
   )
