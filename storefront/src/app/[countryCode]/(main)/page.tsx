@@ -8,6 +8,8 @@ import { Layout, LayoutColumn } from "@/components/Layout"
 import { LocalizedLink } from "@/components/LocalizedLink"
 import { CollectionsSection } from "@/components/CollectionsSection"
 
+export const dynamic = "force-dynamic"
+
 export const metadata: Metadata = {
   title: "Tazari — Pure Ancestral Oils",
   description:
