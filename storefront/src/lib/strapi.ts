@@ -80,12 +80,12 @@ export interface StrapiSingleResponse<T> {
  */
 export async function strapiGet<T>(
   path: string,
-  revalidate = 60,
 ): Promise<T | null> {
   const apiUrl = process.env.STRAPI_API_URL
   const apiToken = process.env.STRAPI_API_TOKEN
 
   if (!apiUrl) {
+    console.error("[Strapi] STRAPI_API_URL is not set — skipping fetch")
     return null
   }
 
@@ -95,12 +95,16 @@ export async function strapiGet<T>(
         ? { Authorization: `Bearer ${apiToken}` }
         : {},
       signal: AbortSignal.timeout(5000),
-      next: { revalidate },
+      cache: "no-store",
     })
 
-    if (!res.ok) return null
+    if (!res.ok) {
+      console.error(`[Strapi] fetch failed: ${path} → HTTP ${res.status}`)
+      return null
+    }
     return res.json() as Promise<T>
-  } catch {
+  } catch (err) {
+    console.error(`[Strapi] fetch error: ${path}`, err)
     return null
   }
 }
